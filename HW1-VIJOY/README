@@ -1,0 +1,24 @@
+homework #1 - Three dimensional OpenGL visualization of the Lorenz Attractor
+
+Vijoy Sunil Kumar
+vijoy.sunil@gmail.com
+CSCI4229/5229 Summer 2018
+
+
+Key bindings
+------------
+   s      decrement 's' parameter
+   S      increment 's' parameter
+   b      decrement 'b' parameter
+   B      increment 'b' parameter
+   r	   decrement 'r' parameter
+   R      increment 'r' parameter
+   +	   zoom in
+   -      zoom out
+   p/P    reset parameters to default
+   arrows Change view angle
+   0      Reset view angle
+   ESC    Exit
+
+Time taken to complete this assignment: 2.5 hours
+--------------------------------------
