@@ -4,6 +4,11 @@ Vijoy Sunil Kumar
 vijoy.sunil@gmail.com
 CSCI4229/5229 Summer 2018
 
+Building and running the code
+-----------------------------
+>> make clean
+>> make
+>> ./hw1_vijoy
 
 Key bindings
 ------------
