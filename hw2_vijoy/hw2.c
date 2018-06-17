@@ -5,17 +5,16 @@
  *
  *  Key bindings:
  *  1	       Render room
- *  2          Render pillars
- *  3          Render tables
- *  4          Render lamp
- *  5          Render chairs
- *  6          Render ALL
- *  7          Render OFF
+ *  2          Render tables
+ *  3          Render lamp
+ *  4          Render chairs
+ *  5          Render ALL
+ *  6          Render OFF
  *  m          Toggle orthogonal/perspective/first person
  *  a          Toggle axes
  *  arrows     Change view angle
  *  PgDn/PgUp  Zoom in and out
- *  0          Reset view angle
+ *  0          Reset 
  *  .          View center of scene
  *  ESC        Exit
  */
@@ -23,13 +22,13 @@
 
 int axes=0;       //  Display axes
 int mode=0;       //  Projection mode
-int th=0;         //  Azimuth of view angle
+int th=180;         //  Azimuth of view angle
 int ph=0;         //  Elevation of view angle
 int fov=55;       //  Field of view (for perspective)
 double asp=1;     //  Aspect ratio
 double dim=12.5;  //  Size of world
 
-int room_on = 0, pillar_on = 0, table_on = 0, lamp_on = 0, chair_on = 0, render_all = 1;
+int room_on = 0, table_on = 0, lamp_on = 0, chair_on = 0, render_all = 1;
 int recent_press = 0;
 
 double room_w = 8.0;
@@ -44,7 +43,7 @@ double ground_w = 16.0;
 double ground_h = 9.0;
 
 char* mode_desc[] = {"Orthogonal", "Perspective", "First person"};
-char* rendered_objs[] = {" ", "room", "pillars", "tables", "lamp", "chairs", "all ", " "};
+char* rendered_objs[] = {" ", "room", "tables", "lamp", "chairs", "all ", " "};
 
 /*
  *  OpenGL (GLUT) calls this routine to display the scene
@@ -83,7 +82,6 @@ void display()
    if(render_all == 1)
    {
       room_on = 1;
-      pillar_on = 1;
       table_on = 1;
       lamp_on = 1;
       chair_on = 1;
@@ -91,7 +89,6 @@ void display()
    if(render_all == 0)
    {
       room_on = 0;
-      pillar_on = 0;
       table_on = 0;
       lamp_on = 0;
       chair_on = 0;
@@ -100,9 +97,6 @@ void display()
 
    if(room_on == 1){
       render_room();
-   }
-
-   if(pillar_on == 1){
       render_pillars();
    }
 
@@ -192,8 +186,8 @@ void display()
        glRotated(-180.0,0,1,0);
        render_chair();
        glPopMatrix();
-   }        
-   
+   } 
+
    //  Draw axes
    glColor3f(1,1,1);
    if (axes)
@@ -264,9 +258,13 @@ void key(unsigned char ch,int x,int y)
    //  Exit on ESC
    if (ch == 27)
       exit(0);
-   //  Reset view angle
-   else if (ch == '0')
-      th = ph = 0;
+   //  Reset 
+   else if (ch == '0'){
+      th = 180;
+      ph = 0;
+      dim = 12.5;
+      mode = 0;
+   }
    //  Toggle axes
    else if (ch == 'a' || ch == 'A')
       axes = 1-axes;
@@ -285,30 +283,33 @@ void key(unsigned char ch,int x,int y)
       recent_press = 1;
    } 
    else if (ch == '2'){
-      pillar_on = 1;
+      table_on = 1;
       recent_press = 2;
    } 
    else if (ch == '3'){
-      table_on = 1;
+      lamp_on = 1;
       recent_press = 3;
    } 
    else if (ch == '4'){
-      lamp_on = 1;
+      chair_on = 1;
       recent_press = 4;
    } 
    else if (ch == '5'){
-      chair_on = 1;
+      render_all = 1;
       recent_press = 5;
    } 
    else if (ch == '6'){
-      render_all = 1;
+      render_all = 0;
       recent_press = 6;
    } 
-   else if (ch == '7'){
-      render_all = 0;
-      recent_press = 7;
-   } 
-  
+
+   // Rest view
+   else if (ch == '.'){
+      dim = 3.3;
+      th = 0;
+      ph = 20; 
+      mode = 1;    
+   }
    //  Reproject
    Project(mode,fov,asp,dim);
    //  Tell GLUT it is necessary to redisplay the scene

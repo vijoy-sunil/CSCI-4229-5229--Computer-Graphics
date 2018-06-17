@@ -137,11 +137,11 @@ void draw_cylinder(float radius,float height,
 
 }
 
-void draw_cone(double height, double radius)
+void draw_cone(double height, double radius, double r, double g, double b)
 {
    int k = 0;
-    /* sides */
-    glColor3f(0.0,0.0,1.0);
+    //sides
+    glColor3f(r,g,b);
     glBegin(GL_TRIANGLES);
     for (k=0;k<=360;k+=5){
       
@@ -150,16 +150,16 @@ void draw_cone(double height, double radius)
       glVertex3f(Cos(k+5),Sin(k+5),0);
     }
     glEnd();
-
-    /* bottom circle */ 
-    /* rotate back */
+/*
+    //bottom circle  
+    //rotate back 
     glRotated(90,1,0,0);
-    glColor3f(1.0,0.0,0.0);
+    glColor3f(r,g,b);
     glBegin(GL_TRIANGLES);
     for (k=0;k<=360;k+=5) {
       glVertex3f(0,0,0);
       glVertex3f(Cos(k),0,Sin(k));
       glVertex3f(Cos(k+5),0,Sin(k+5));
     }
-    glEnd();
+    glEnd();*/
 }

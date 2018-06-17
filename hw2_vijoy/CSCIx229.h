@@ -39,7 +39,7 @@ void cube(double x,double y,double z,
 void draw_cylinder(float radius,float height,
                    float R, float G,float B);
 
-void draw_cone(double height, double radius);
+void draw_cone(double height, double radius, double r, double g, double b);
 void sphere(double x,double y,double z,double r, double rgb);
 void Vertex(double th,double ph,double rgb);
 

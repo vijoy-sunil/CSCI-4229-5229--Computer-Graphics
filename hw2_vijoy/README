@@ -6,16 +6,15 @@ CSCI4229/5229 Summer 2018
 
 Key bindings:
  *  1	       Render room
- *  2          Render pillars
- *  3          Render tables
- *  4          Render lamp
- *  5          Render chairs
- *  6          Render ALL
- *  7          Render OFF
+ *  2          Render tables
+ *  3          Render lamp
+ *  4          Render chairs
+ *  5          Render ALL
+ *  6          Render OFF
  *  m          Toggle orthogonal/perspective/first person
  *  a          Toggle axes
  *  arrows     Change view angle
  *  PgDn/PgUp  Zoom in and out
- *  0          Reset view angle
+ *  0          Reset 
  *  .          View center of scene
  *  ESC        Exit

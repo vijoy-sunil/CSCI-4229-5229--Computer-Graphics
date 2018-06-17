@@ -190,46 +190,46 @@ void render_pillars(void)
 
    //vertical pillars
    // thick pillars - pillar1
-   //glEnable(GL_POLYGON_OFFSET_FILL);
-   //glPolygonOffset(1,1);
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
    cube(-room_w/2+pillar_thickness/2,room_w/4,2.5, -pillar_thickness/2,room_w/4,-pillar1_w/2, 0, pillars_r,pillars_g,pillars_b);
-   //glDisable(GL_POLYGON_OFFSET_FILL);
+   glDisable(GL_POLYGON_OFFSET_FILL);
 
-   //glEnable(GL_POLYGON_OFFSET_FILL);
-   //glPolygonOffset(1,1);
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
    cube(room_w/2-pillar_thickness/2,room_w/4,2.5, pillar_thickness/2,room_w/4,pillar1_w/2, 0,pillars_r,pillars_g,pillars_b);
-   //glDisable(GL_POLYGON_OFFSET_FILL);
+   glDisable(GL_POLYGON_OFFSET_FILL);
 
-   //glEnable(GL_POLYGON_OFFSET_FILL);
-   //glPolygonOffset(1,1);
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
    cube(-room_w/2+pillar_thickness/2,room_w/4,-2.5, -pillar_thickness/2,room_w/4,-pillar1_w/2, 0, pillars_r,pillars_g,pillars_b);
-   //glDisable(GL_POLYGON_OFFSET_FILL);
+   glDisable(GL_POLYGON_OFFSET_FILL);
 
-   //glEnable(GL_POLYGON_OFFSET_FILL);
-   //glPolygonOffset(1,1);
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
    cube(room_w/2-pillar_thickness/2,room_w/4,-2.5, pillar_thickness/2,room_w/4,pillar1_w/2, 0, pillars_r,pillars_g,pillars_b);
-   //glDisable(GL_POLYGON_OFFSET_FILL);
+   glDisable(GL_POLYGON_OFFSET_FILL);
 
    //thin pillars - pillar2
-   //glEnable(GL_POLYGON_OFFSET_FILL);
-   //glPolygonOffset(1,1);
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
    cube(-room_w/2+pillar_thickness/2,room_w/4,room_h-pillar2_w/2, -pillar_thickness/2,room_w/4,-pillar2_w/2, 0,pillars_r,pillars_g,pillars_b);
-   //glDisable(GL_POLYGON_OFFSET_FILL);
+   glDisable(GL_POLYGON_OFFSET_FILL);
 
-   //glEnable(GL_POLYGON_OFFSET_FILL);
-   //glPolygonOffset(1,1);
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
    cube(room_w/2-pillar_thickness/2,room_w/4,room_h-pillar2_w/2, -pillar_thickness/2,room_w/4,-pillar2_w/2, 0, pillars_r,pillars_g,pillars_b);
-   //glDisable(GL_POLYGON_OFFSET_FILL);
+   glDisable(GL_POLYGON_OFFSET_FILL);
 
-   //glEnable(GL_POLYGON_OFFSET_FILL);
-   //glPolygonOffset(1,1);
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
    cube(room_w/2-pillar_thickness/2,room_w/4,-room_h+pillar2_w/2, -pillar_thickness/2,room_w/4,-pillar2_w/2, 0, pillars_r,pillars_g,pillars_b);
-   //glDisable(GL_POLYGON_OFFSET_FILL);
+   glDisable(GL_POLYGON_OFFSET_FILL);
 
-   //glEnable(GL_POLYGON_OFFSET_FILL);
-   //glPolygonOffset(1,1);
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
    cube(-room_w/2+pillar_thickness/2,room_w/4,-room_h+pillar2_w/2, -pillar_thickness/2,room_w/4,-pillar2_w/2, 0, pillars_r,pillars_g,pillars_b);  
-   //glDisable(GL_POLYGON_OFFSET_FILL);
+   glDisable(GL_POLYGON_OFFSET_FILL);
 
    //horizontal pillars
    double pillar_thickness1 = 0.2;
@@ -376,17 +376,17 @@ void render_lamp(void)
    glDisable(GL_POLYGON_OFFSET_FILL);  
 
    //cone on top of cube
-
    double cone_h = 0.5;
-/*
-   double cone_r = cube_w-0.1;
    glEnable(GL_POLYGON_OFFSET_FILL);
    glPolygonOffset(1,1);
    glPushMatrix();
-   draw_cone(cone_h, cone_r);
+   glTranslated(0.0, cylinder_h+cube_h, 0.0);
+   glRotated(-90.0,1,0,0);
+   glScaled(0.35,0.35,1.0);
+   draw_cone(cone_h, 1.0,0.180,0.180,0.180);
    glPopMatrix();
    glDisable(GL_POLYGON_OFFSET_FILL); 
-*/
+
 
    //sphere on top of cube
    double sphere_r = cube_w/2;
@@ -434,6 +434,15 @@ void render_lamp(void)
    glPopMatrix();
 
    //cone
-
+   double cone_h2 = 1.5;
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
+   glPushMatrix();
+   glTranslated(rod_h/2,2.0, 0);
+   glRotated(-90.0,1,0,0);
+   glScaled(1.0,1.0,1.0);
+   draw_cone(cone_h2, 1.0,0.180,0.180,0.180);
+   glPopMatrix();
+   glDisable(GL_POLYGON_OFFSET_FILL); 
 }
 
