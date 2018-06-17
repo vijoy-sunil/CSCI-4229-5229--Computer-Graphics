@@ -446,3 +446,99 @@ void render_lamp(void)
    glDisable(GL_POLYGON_OFFSET_FILL); 
 }
 
+void render_computer(void)
+{
+   double comp_r = 0.3, comp_g = 0.26, comp_b = 0.26;
+   double base_thickness = 0.05, base_l = 1.0, base_w = 0.8;
+   //base
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
+   cube(0,base_thickness/2,0, base_l/2,base_thickness/2, base_w/2, 0, comp_r, comp_g, comp_b);
+   glDisable(GL_POLYGON_OFFSET_FILL);
+
+   //mouse and keyboard outline
+   glColor3f(comp_r+0.2, comp_g+0.2, comp_b+0.2);
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
+   glBegin(GL_LINE_STRIP);
+   glVertex3f(-0.2,base_thickness,0.15);
+   glVertex3f(0.2,base_thickness,0.15);
+   glVertex3f(0.2,base_thickness,0.35);
+   glVertex3f(-0.2,base_thickness,0.35);
+   glVertex3f(-0.2,base_thickness,0.15);
+   glDisable(GL_POLYGON_OFFSET_FILL);
+   glEnd();
+
+   glColor3f(comp_r+0.2, comp_g+0.2, comp_b+0.2);
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
+   glBegin(GL_LINE_STRIP);
+   glVertex3f(-0.45,base_thickness,0.10);
+   glVertex3f(-0.45,base_thickness,-0.30);
+   glVertex3f(0.45,base_thickness,-0.30);
+   glVertex3f(0.45,base_thickness,0.10);
+   glVertex3f(-0.45,base_thickness,0.10);
+   glDisable(GL_POLYGON_OFFSET_FILL);
+   glEnd();
+
+   //top
+   glEnable(GL_POLYGON_OFFSET_FILL);
+   glPolygonOffset(1,1);
+   glPushMatrix();
+   glTranslated(0.0, 0.33, -0.65);
+   glRotated(45.0,1,0,0);
+   cube(0,base_thickness/2,0, base_l/2,base_thickness/2, base_w/2, 0, comp_r, comp_g, comp_b);
+   
+   glDisable(GL_POLYGON_OFFSET_FILL);
+   //monitor outline
+   glColor3f(comp_r+0.2, comp_g+0.2, comp_b+0.2);
+   //glEnable(GL_POLYGON_OFFSET_FILL);
+   //glPolygonOffset(1,1);
+   glBegin(GL_LINE_STRIP);
+   glVertex3f(-0.45,base_thickness,0.35);
+   glVertex3f(-0.45,base_thickness,-0.35);
+   glVertex3f(0.45,base_thickness,-0.35);
+   glVertex3f(0.45,base_thickness,0.35);
+   glVertex3f(-0.45,base_thickness,0.35);
+   //glDisable(GL_POLYGON_OFFSET_FILL);
+   glEnd(); 
+   glPopMatrix();
+  
+   
+   
+   //ports
+   cube(-0.5,base_thickness/2,0.10, 0.0,base_thickness/4, 0.05, 0, comp_r+0.4, comp_g+0.4, comp_b+0.4);
+   cube(-0.5,base_thickness/2,0.30, 0.0,base_thickness/4, 0.05, 0, comp_r+0.4, comp_g+0.4, comp_b+0.4);
+   cube(0.5,base_thickness/2,0.10, 0.0,base_thickness/4, 0.05, 0, comp_r+0.4, comp_g+0.4, comp_b+0.4);
+   cube(0.5,base_thickness/2,0.30, 0.0,base_thickness/4, 0.05, 0, comp_r+0.4, comp_g+0.4, comp_b+0.4);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

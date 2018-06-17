@@ -4,33 +4,35 @@
  *  3-D Scene Rendering
  *
  *  Key bindings:
+ *  0          Reset 
  *  1	       Render room
  *  2          Render tables
- *  3          Render lamp
+ *  3          Render lamps, computers
  *  4          Render chairs
  *  5          Render ALL (default on start up)
  *  6          Render OFF
  *  m          Toggle orthogonal/perspective/first person
  *  a          Toggle axes
- *  arrows     Change view angle
- *  a/s/w/d    Move in first person (forward/backward/left/right)
- *  j/k/i/l    Viwe angle in first person (left/down/up/right)
- *  PgDn/PgUp  Zoom in and out
- *  0          Reset 
+ *  arrows     Change view angle (in ortho/perspective)
+ *  PgDn/PgUp  Zoom in and out (in ortho/perspective)
+ *  a,s,w,d    Move in first person (forward/backward/left/right)
+ *  j,k,i,l    Viwe angle in first person (left/down/up/right)
  *  .          View center of scene
  *  ESC        Exit
+ *  h,H        Toggle help menu
  */
 #include "CSCIx229.h"
 
 int axes=0;       //  Display axes
+int help_on = 0;  //  Toggle help menu
 int mode=0;       //  Projection mode
-int th=180;         //  Azimuth of view angle
-int ph=90;         //  Elevation of view angle
+int th=180;       //  Azimuth of view angle
+int ph=90;        //  Elevation of view angle
 int fov=55;       //  Field of view (for perspective)
 double asp=1;     //  Aspect ratio
 double dim=12.5;  //  Size of world
 
-int room_on = 0, table_on = 0, lamp_on = 0, chair_on = 0, render_all = 1;
+int room_on = 0, table_on = 0, table_objs_on = 0, chair_on = 0, render_all = 1;
 int recent_press = 0;
 
 double room_w = 8.0;
@@ -45,7 +47,7 @@ double ground_w = 16.0;
 double ground_h = 9.0;
 
 char* mode_desc[] = {"Orthogonal", "Perspective", "First person"};
-char* rendered_objs[] = {"all", "room", "tables", "lamp", "chairs", "all ", " "};
+char* rendered_objs[] = {"all", "room", "tables", "lamps,computers", "chairs", "all ", " "};
 
 //angle of rotation
 float xpos = 0, ypos = 0, zpos = 0, xrot = 0, yrot = 0, angle=0.0;
@@ -92,14 +94,14 @@ void display()
    {
       room_on = 1;
       table_on = 1;
-      lamp_on = 1;
+      table_objs_on = 1;
       chair_on = 1;
    }
    if(render_all == 0)
    {
       room_on = 0;
       table_on = 0;
-      lamp_on = 0;
+      table_objs_on = 0;
       chair_on = 0;
       render_all = 2;
    }
@@ -136,13 +138,41 @@ void display()
       render_table();
    }  
 
-   if(lamp_on == 1)
+   if(table_objs_on == 1)
    {
        glPushMatrix();
        glTranslated((-table_l/2)+0.20, room_w/6 + table_top_thickness/2, 0);
        glScaled(0.20,0.17,0.20);
        render_lamp();
        glPopMatrix(); 
+
+       glPushMatrix();
+       glTranslated(4.8, room_w/6 + table_top_thickness/2, 4.5);
+       glRotated(75.0,0,1,0);
+       glScaled(0.20,0.17,0.20);
+       render_lamp();
+       glPopMatrix(); 
+
+       glPushMatrix();
+       glTranslated(-4.8, room_w/6 + table_top_thickness/2, 2.5); 
+       glRotated(120.0,0,1,0);
+       glScaled(0.20,0.17,0.20);
+       render_lamp();
+       glPopMatrix(); 
+
+       glPushMatrix();
+       glTranslated(5.0, room_w/6 + table_top_thickness/2, 0.0); 
+       glRotated(80.0,0,1,0);
+       glScaled(0.8,0.8,0.8);
+       render_computer();
+       glPopMatrix();
+
+       glPushMatrix();
+       glTranslated(-5.0, room_w/6 + table_top_thickness/2, -2.0); 
+       glRotated(-90.0,0,1,0);
+       glScaled(0.8,0.8,0.8);
+       render_computer();
+       glPopMatrix();
    }  
    if(chair_on == 1)
    {
@@ -234,6 +264,52 @@ void display()
 
      Print("Position=%1.f,%1.f,%1.f, Head angle=%1.f,%1.f, Projection=%s",xpos,ypos,zpos,yrot_d,xrot_d,mode_desc[mode]);
    }
+
+   // Help menu
+   if(help_on == 0){
+      glWindowPos2i(5,45);
+      Print("For help, press [H] or [h]");
+   }
+   if(help_on == 1)
+   {
+      glWindowPos2i(5,45);
+      Print("Press [H] or [h] to turn OFF help");
+
+      glWindowPos2i(5,65);
+      Print("[a]	Toggle axes");  
+
+      glWindowPos2i(5,85);
+      Print("[j,k,i,l]	turn left/down/up/right [in first-person]"); 
+      glWindowPos2i(5,105);
+      Print("[a,s,w,d]	move forward/backward/left/right [in first-person]"); 
+
+      glWindowPos2i(5,125);
+      Print("[PgDn/PgUp]	Zoom in and out [in ortho or perspective]"); 
+      glWindowPos2i(5,145);
+      Print("[arrows]	Change view angle [in ortho or perspective]"); 
+      glWindowPos2i(5,165);
+      Print("[m]	orthogonal / perspective / first-person");
+
+      glWindowPos2i(5,185);
+      Print("[6]	Render NONE"); 
+      glWindowPos2i(5,205);
+      Print("[5]	Render ALL"); 
+      glWindowPos2i(5,225);
+      Print("[4]	Render chairs"); 
+      glWindowPos2i(5,245);
+      Print("[3]	Render lamps,computers"); 
+      glWindowPos2i(5,265);
+      Print("[2]	Render tables"); 
+      glWindowPos2i(5,285);
+      Print("[1]	Render room");  
+      glWindowPos2i(5,305);
+      Print("[0]	Reset all"); 
+      glWindowPos2i(5,325);
+      Print("[.]	Default view"); 
+      glWindowPos2i(5,345);
+      Print("[ESC]	Exit");  
+   }
+
    //  Render the scene and make it visible
    glFlush();
    glutSwapBuffers();
@@ -296,9 +372,11 @@ void key(unsigned char ch,int x,int y)
       xrot = 0;
       yrot = 180;
       xpos = 0;
-      ypos = 2;
+      ypos = 3;
       zpos =-9;  
    }
+   else if (ch == 'h' || ch == 'H')
+      help_on = !help_on;
 
    //  Toggle axes
    else if (ch == 'x' || ch == 'X')
@@ -322,7 +400,7 @@ void key(unsigned char ch,int x,int y)
       recent_press = 2;
    } 
    else if (ch == '3'){
-      lamp_on = 1;
+      table_objs_on = 1;
       recent_press = 3;
    } 
    else if (ch == '4'){

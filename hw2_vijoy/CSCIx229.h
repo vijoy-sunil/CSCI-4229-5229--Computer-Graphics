@@ -48,6 +48,7 @@ void render_pillars(void);
 void render_table(void);
 void render_chair(void);
 void render_lamp(void);
+void render_computer(void);
 
 #ifdef __cplusplus
 }

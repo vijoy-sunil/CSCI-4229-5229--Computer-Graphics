@@ -5,18 +5,19 @@ CSCI4229/5229 Summer 2018
 3-D Scene Rendering
 
 Key bindings:
+ *  0          Reset 
  *  1	       Render room
  *  2          Render tables
- *  3          Render lamp
+ *  3          Render lamps, computers
  *  4          Render chairs
  *  5          Render ALL (default on start up)
  *  6          Render OFF
  *  m          Toggle orthogonal/perspective/first person
  *  a          Toggle axes
- *  arrows     Change view angle
- *  a/s/w/d    Move in first person (forward/backward/left/right)
- *  j/k/i/l    Viwe angle in first person (left/down/up/right)
- *  PgDn/PgUp  Zoom in and out
- *  0          Reset 
+ *  arrows     Change view angle (in ortho/perspective)
+ *  PgDn/PgUp  Zoom in and out (in ortho/perspective)
+ *  a,s,w,d    Move in first person (forward/backward/left/right)
+ *  j,k,i,l    Viwe angle in first person (left/down/up/right)
  *  .          View center of scene
  *  ESC        Exit
+ *  h,H        Toggle help menu
