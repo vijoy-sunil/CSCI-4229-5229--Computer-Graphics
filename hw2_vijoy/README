@@ -9,11 +9,13 @@ Key bindings:
  *  2          Render tables
  *  3          Render lamp
  *  4          Render chairs
- *  5          Render ALL
+ *  5          Render ALL (default on start up)
  *  6          Render OFF
  *  m          Toggle orthogonal/perspective/first person
  *  a          Toggle axes
  *  arrows     Change view angle
+ *  a/s/w/d    Move in first person (forward/backward/left/right)
+ *  j/k/i/l    Viwe angle in first person (left/down/up/right)
  *  PgDn/PgUp  Zoom in and out
  *  0          Reset 
  *  .          View center of scene

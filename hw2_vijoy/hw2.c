@@ -8,11 +8,13 @@
  *  2          Render tables
  *  3          Render lamp
  *  4          Render chairs
- *  5          Render ALL
+ *  5          Render ALL (default on start up)
  *  6          Render OFF
  *  m          Toggle orthogonal/perspective/first person
  *  a          Toggle axes
  *  arrows     Change view angle
+ *  a/s/w/d    Move in first person (forward/backward/left/right)
+ *  j/k/i/l    Viwe angle in first person (left/down/up/right)
  *  PgDn/PgUp  Zoom in and out
  *  0          Reset 
  *  .          View center of scene
@@ -23,7 +25,7 @@
 int axes=0;       //  Display axes
 int mode=0;       //  Projection mode
 int th=180;         //  Azimuth of view angle
-int ph=0;         //  Elevation of view angle
+int ph=90;         //  Elevation of view angle
 int fov=55;       //  Field of view (for perspective)
 double asp=1;     //  Aspect ratio
 double dim=12.5;  //  Size of world
@@ -43,7 +45,11 @@ double ground_w = 16.0;
 double ground_h = 9.0;
 
 char* mode_desc[] = {"Orthogonal", "Perspective", "First person"};
-char* rendered_objs[] = {" ", "room", "tables", "lamp", "chairs", "all ", " "};
+char* rendered_objs[] = {"all", "room", "tables", "lamp", "chairs", "all ", " "};
+
+//angle of rotation
+float xpos = 0, ypos = 0, zpos = 0, xrot = 0, yrot = 0, angle=0.0;
+float xrot_d, yrot_d;
 
 /*
  *  OpenGL (GLUT) calls this routine to display the scene
@@ -73,9 +79,12 @@ void display()
       glRotatef(th,0,1,0);
    }
    // First person point of view
+   // Reference: http://www.swiftless.com/tutorials/opengl/camera.html
    else if (mode == 2)
    {
-
+    glRotatef(xrot,1.0,0.0,0.0);  //rotate our camera on the x-axis (left and right)
+    glRotatef(yrot,0.0,1.0,0.0);  //rotate our camera on the y-axis (up and down)
+    glTranslated(-xpos,-ypos,-zpos); //translate the screen to the position of our camera
    }
   
    // Render objects
@@ -211,8 +220,20 @@ void display()
    //  Display parameters
    glWindowPos2i(5,25);
    Print("Recently Rendered: %s",rendered_objs[recent_press]);
-   glWindowPos2i(5,5);
-   Print("Angle=%d,%d  Dim=%.1f FOV=%d Projection=%s",th,ph,dim,fov,mode_desc[mode]);
+   if(mode <= 1){
+     glWindowPos2i(5,5);
+     Print("Angle=%d,%d  Dim=%.1f FOV=%d Projection=%s",th,ph,dim,fov,mode_desc[mode]);
+   }
+   else{
+     glWindowPos2i(5,5);
+     if(yrot == 0) yrot_d = 0;
+     else yrot_d = yrot;
+
+     if(xrot == 0) xrot_d = 0;
+     else xrot_d = -xrot;
+
+     Print("Position=%1.f,%1.f,%1.f, Head angle=%1.f,%1.f, Projection=%s",xpos,ypos,zpos,yrot_d,xrot_d,mode_desc[mode]);
+   }
    //  Render the scene and make it visible
    glFlush();
    glutSwapBuffers();
@@ -258,15 +279,29 @@ void key(unsigned char ch,int x,int y)
    //  Exit on ESC
    if (ch == 27)
       exit(0);
-   //  Reset 
+
+   //  Reset all view (on startup)
    else if (ch == '0'){
       th = 180;
-      ph = 0;
+      ph = 90;
       dim = 12.5;
-      mode = 0;
    }
+
+   // Main view
+   else if (ch == '.'){
+      dim = 5.2;
+      th = 180;
+      ph = 15; 
+
+      xrot = 0;
+      yrot = 180;
+      xpos = 0;
+      ypos = 2;
+      zpos =-9;  
+   }
+
    //  Toggle axes
-   else if (ch == 'a' || ch == 'A')
+   else if (ch == 'x' || ch == 'X')
       axes = 1-axes;
    //  Switch display mode
    else if (ch == 'm' || ch == 'M'){
@@ -303,12 +338,63 @@ void key(unsigned char ch,int x,int y)
       recent_press = 6;
    } 
 
-   // Rest view
-   else if (ch == '.'){
-      dim = 3.3;
-      th = 0;
-      ph = 20; 
-      mode = 1;    
+   // FP view
+   else if (ch =='k' || ch=='K')
+   {
+      xrot += 1;
+      if (xrot >360) xrot -= 360;
+   }
+   else if (ch =='i' || ch=='I')
+   {
+      xrot -= 1;
+      if (xrot < -360) xrot += 360;
+   }
+   if (ch =='l' || ch=='L')
+   {
+      yrot += 1;
+      if (yrot >360) yrot -= 360;
+   }
+   else if (ch =='j' || ch=='J')
+   {
+      yrot -= 1;
+      if (yrot < -360) yrot += 360;
+   }
+
+   // FP movement
+   else if (ch =='w' || ch =='W')
+   {
+      float xrotrad, yrotrad;
+      yrotrad = (yrot / 180 * 3.141592654f);
+      xrotrad = (xrot / 180 * 3.141592654f);
+      xpos += (sin(yrotrad)) ;
+      zpos -= (cos(yrotrad)) ;
+      ypos -= (sin(xrotrad)) ;
+   }
+
+   else if (ch =='s' || ch =='S')
+   {
+      float xrotrad, yrotrad;
+      yrotrad = (yrot / 180 * 3.141592654f);
+      xrotrad = (xrot / 180 * 3.141592654f);
+      xpos -= (sin(yrotrad));
+      zpos += (cos(yrotrad)) ;
+      ypos += (sin(xrotrad));
+   }
+
+   else if (ch =='d' || ch =='D')
+   {
+      float yrotrad;
+      yrotrad = (yrot / 180 * 3.141592654f);
+      xpos += (cos(yrotrad)) * 0.2;
+      zpos += (sin(yrotrad)) * 0.2;
+   }
+
+   else if (ch=='a' || ch =='A')
+   {
+      float yrotrad;
+      yrotrad = (yrot / 180 * 3.141592654f);
+      xpos -= (cos(yrotrad)) * 0.2;
+      zpos -= (sin(yrotrad)) * 0.2;
    }
    //  Reproject
    Project(mode,fov,asp,dim);
@@ -342,6 +428,7 @@ int main(int argc,char* argv[])
    glutCreateWindow("HW2 - Vijoy Sunil Kumar");
    //  Set callbacks
    glutDisplayFunc(display);
+   glutIdleFunc (display);
    glutReshapeFunc(reshape);
    glutSpecialFunc(special);
    glutKeyboardFunc(key);
