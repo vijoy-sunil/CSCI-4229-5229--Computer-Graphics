@@ -1,14 +1,21 @@
-ex10: Polygon Offset
 
-Willem A. (Vlakkies) Schreuder
+Homework #2 - Vijoy Sunil Kumar
 CSCI4229/5229 Summer 2018
 
-Demonstrates the use of polygon offset to overdraw lines and polygons.
+3-D Scene Rendering
 
-Key bindings
-  m          Toggle polygon offset on/off
-  a          Toggle axes
-  arrows     Change view angle
-  PgDn/PgUp  Zoom in and out
-  0          Reset view angle
-  ESC        Exit
+Key bindings:
+ *  1	       Render room
+ *  2          Render pillars
+ *  3          Render tables
+ *  4          Render lamp
+ *  5          Render chairs
+ *  6          Render ALL
+ *  7          Render OFF
+ *  m          Toggle orthogonal/perspective/first person
+ *  a          Toggle axes
+ *  arrows     Change view angle
+ *  PgDn/PgUp  Zoom in and out
+ *  0          Reset view angle
+ *  .          View center of scene
+ *  ESC        Exit

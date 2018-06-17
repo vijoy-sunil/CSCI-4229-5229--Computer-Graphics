@@ -1,14 +1,22 @@
 /*
- *  Polygon Offset
+ *  Homework #2 - Vijoy Sunil Kumar
  *
- *  Demonstrates the use of polygon offset to overdraw lines and polygons.
+ *  3-D Scene Rendering
  *
  *  Key bindings:
+ *  1	       Render room
+ *  2          Render pillars
+ *  3          Render tables
+ *  4          Render lamp
+ *  5          Render chairs
+ *  6          Render ALL
+ *  7          Render OFF
  *  m          Toggle orthogonal/perspective/first person
  *  a          Toggle axes
  *  arrows     Change view angle
  *  PgDn/PgUp  Zoom in and out
  *  0          Reset view angle
+ *  .          View center of scene
  *  ESC        Exit
  */
 #include "CSCIx229.h"
@@ -19,12 +27,15 @@ int th=0;         //  Azimuth of view angle
 int ph=0;         //  Elevation of view angle
 int fov=55;       //  Field of view (for perspective)
 double asp=1;     //  Aspect ratio
-double dim=10.0;   //  Size of world
+double dim=12.5;  //  Size of world
+
+int room_on = 0, pillar_on = 0, table_on = 0, lamp_on = 0, chair_on = 0, render_all = 1;
+int recent_press = 0;
 
 double room_w = 8.0;
 double room_h = 6.0;
 double door_w = 1.6;
-double door_h = 2.5;
+double door_h = 3.5;
 
 double pillar1_w = 1.0;
 double pillar2_w = 0.250;
@@ -32,360 +43,15 @@ double pillar2_w = 0.250;
 double ground_w = 16.0;
 double ground_h = 9.0;
 
-static void render_room(void)
-{
-
-   //--------------------------------------------------------------
-   // Draw floor
-   glColor3f(1,1,0);					//set color
-   glBegin(GL_QUADS);
-   glVertex3f(-ground_w/2,0.0,room_h);
-   glVertex3f(-ground_w/2,0.0,-ground_h);
-   glVertex3f(ground_w/2,0.0,-ground_h);
-   glVertex3f(ground_w/2,0.0,room_h);
-   glEnd();
-
-   //--------------------------------------------------------------
-   // Draw side walls (LEFT)
-   glColor3f(1,0,0);					//set color
-   glBegin(GL_QUADS);
-   glVertex3f(-room_w/2,0.0,room_h);
-   glVertex3f(-room_w/2,room_w/3.9,room_h);
-   glVertex3f(-room_w/2,room_w/3.9,-room_h);
-   glVertex3f(-room_w/2,0.0,-room_h);
-   glEnd();   
-
-   // Upper strip
-   glColor3f(1,0,0);					//set color
-   glBegin(GL_QUADS);
-   glVertex3f(-room_w/2,room_w/2,room_h);
-   glVertex3f(-room_w/2,room_w/2,-room_h);
-   glVertex3f(-room_w/2,(room_w/2)-0.3,-room_h);
-   glVertex3f(-room_w/2,(room_w/2)-0.3,room_h);
-   glEnd(); 
-
-   // Draw side walls (LEFT OUTER)
-   glColor3f(1,0,0);					//set color
-   glBegin(GL_QUADS);
-   glVertex3f(-ground_w/2,0.0,room_h);
-   glVertex3f(-ground_w/2,room_w/2,room_h);
-   glVertex3f(-ground_w/2,room_w/2,-ground_h);
-   glVertex3f(-ground_w/2,0.0,-ground_h);
-   glEnd(); 
- 
-   // Draw side walls (RIGHT)
-   glColor3f(1,0,0);					//set color
-   glBegin(GL_QUADS);
-   glVertex3f(room_w/2,0.0,room_h);
-   glVertex3f(room_w/2,room_w/3.9,room_h);
-   glVertex3f(room_w/2,room_w/3.9,-room_h);
-   glVertex3f(room_w/2,0.0,-room_h);
-   glEnd(); 
-
-   // Upper strip
-   glColor3f(1,0,0);					//set color
-   glBegin(GL_QUADS);
-   glVertex3f(room_w/2,room_w/2,room_h);
-   glVertex3f(room_w/2,room_w/2,-room_h);
-   glVertex3f(room_w/2,(room_w/2)-0.3,-room_h);
-   glVertex3f(room_w/2,(room_w/2)-0.3,room_h);
-   glEnd(); 
-
-   // Draw side walls (RIGHT OUTER)
-   glColor3f(1,0,0);					//set color
-   glBegin(GL_QUADS);
-   glVertex3f(ground_w/2,0.0,room_h);
-   glVertex3f(ground_w/2,room_w/2,room_h);
-   glVertex3f(ground_w/2,room_w/2,-ground_h);
-   glVertex3f(ground_w/2,0.0,-ground_h);
-   glEnd();  
-
-   //--------------------------------------------------------------
-   // Draw back wall  
-   glColor3f(1,1,1);					//set color
-   glBegin(GL_QUADS);
-   glVertex3f(-ground_w/2,0.0,room_h);
-   glVertex3f(-ground_w/2,room_w/2,room_h);
-   glVertex3f(ground_w/2,room_w/2,room_h);
-   glVertex3f(ground_w/2,0.0,room_h);
-   glEnd();  
-
-   //--------------------------------------------------------------
-   // Draw front wall (DOOR)  
-   glColor3f(1,1,1);					//set color
-   glBegin(GL_QUADS);
-   glVertex3f(-room_w/2,0.0,-room_h);
-   glVertex3f(-room_w/2,room_w/2,-room_h);
-   glVertex3f(-door_w/2,room_w/2,-room_h);
-   glVertex3f(-door_w/2,0.0,-room_h);
-   glEnd();
-
-   glColor3f(1,1,1);					//set color
-   glBegin(GL_QUADS);
-   glVertex3f(room_w/2,0.0,-room_h);
-   glVertex3f(room_w/2,room_w/2,-room_h);
-   glVertex3f(door_w/2,room_w/2,-room_h);
-   glVertex3f(door_w/2,0.0,-room_h);
-   glEnd();
-
-   glColor3f(1,1,1);					//set color
-   glBegin(GL_QUADS);
-   glVertex3f(-door_w/2,room_w/2,-room_h);
-   glVertex3f(door_w/2,room_w/2,-room_h);
-   glVertex3f(door_w/2,door_h,-room_h);
-   glVertex3f(-door_w/2,door_h,-room_h);
-   glEnd();
-
-   //--------------------------------------------------------------
-   // Draw ceiling
-
-   /*
-   glColor3f(1,1,1);					//set color
-   glBegin(GL_QUADS);
-   glVertex3f(-room_w/2,room_w/2,-room_h);
-   glVertex3f(room_w/2,room_w/2,-room_h);
-   glVertex3f(room_w/2,room_w/2,room_h);
-   glVertex3f(-room_w/2,room_w/2,room_h);
-   glEnd();
-   */
-
-}
-
-
-/*
- *  Draw a cube
- *     at (x,y,z)
- *     dimensions (dx,dy,dz)
- *     rotated th about the y axis
- */
-static void cube(double x,double y,double z,
-                 double dx,double dy,double dz,
-                 double th, int r, int g, int b)
-{
-   //  Save transformation
-   glPushMatrix();
-   //  Offset
-   glTranslated(x,y,z);
-   glRotated(th,0,1,0);
-   glScaled(dx,dy,dz);
-   //  Cube
-   glBegin(GL_QUADS);
-   //  Front
-   glColor3f(r, g, b);
-   glVertex3f(-1,-1, 1);
-   glVertex3f(+1,-1, 1);
-   glVertex3f(+1,+1, 1);
-   glVertex3f(-1,+1, 1);
-   //  Back
-   glVertex3f(+1,-1,-1);
-   glVertex3f(-1,-1,-1);
-   glVertex3f(-1,+1,-1);
-   glVertex3f(+1,+1,-1);
-   //  Right
-   glVertex3f(+1,-1,+1);
-   glVertex3f(+1,-1,-1);
-   glVertex3f(+1,+1,-1);
-   glVertex3f(+1,+1,+1);
-   //  Left
-   glVertex3f(-1,-1,-1);
-   glVertex3f(-1,-1,+1);
-   glVertex3f(-1,+1,+1);
-   glVertex3f(-1,+1,-1);
-   //  Top
-   glVertex3f(-1,+1,+1);
-   glVertex3f(+1,+1,+1);
-   glVertex3f(+1,+1,-1);
-   glVertex3f(-1,+1,-1);
-   //  Bottom
-   glVertex3f(-1,-1,-1);
-   glVertex3f(+1,-1,-1);
-   glVertex3f(+1,-1,+1);
-   glVertex3f(-1,-1,+1);
-   //  End
-   glEnd();
-   //  Undo transofrmations
-   glPopMatrix();
-}
-
-static void render_pillars(void)
-{
-   double pillar_thickness = 0.4;
-
-   //vertical pillars
-   // thick pillars - pillar1
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(-room_w/2+pillar_thickness/2,room_w/4,2.5, -pillar_thickness/2,room_w/4,-pillar1_w/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(room_w/2-pillar_thickness/2,room_w/4,2.5, pillar_thickness/2,room_w/4,pillar1_w/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(-room_w/2+pillar_thickness/2,room_w/4,-2.5, -pillar_thickness/2,room_w/4,-pillar1_w/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(room_w/2-pillar_thickness/2,room_w/4,-2.5, pillar_thickness/2,room_w/4,pillar1_w/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   //thin pillars - pillar2
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(-room_w/2+pillar_thickness/2,room_w/4,room_h-pillar2_w/2, -pillar_thickness/2,room_w/4,-pillar2_w/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(room_w/2-pillar_thickness/2,room_w/4,room_h-pillar2_w/2, -pillar_thickness/2,room_w/4,-pillar2_w/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(room_w/2-pillar_thickness/2,room_w/4,-room_h+pillar2_w/2, -pillar_thickness/2,room_w/4,-pillar2_w/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(-room_w/2+pillar_thickness/2,room_w/4,-room_h+pillar2_w/2, -pillar_thickness/2,room_w/4,-pillar2_w/2, 0, 1, 0, 0);   
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   //horizontal pillars
-   double pillar_thickness1 = 0.2;
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(-room_w/2+pillar_thickness1/2,room_w/10,0.0, pillar_thickness1/2,room_w/10,room_h, 0, 1, 1, 1);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(room_w/2-pillar_thickness1/2,room_w/10,0.0, pillar_thickness1/2,room_w/10,room_h, 0, 1, 1, 1);  
-   glDisable(GL_POLYGON_OFFSET_FILL); 
-}
-
-static render_table(void)
-{
-   double table_l = 3.0;
-   double table_w = 1.5;
-   double table_top_thickness = 0.05;
-
-   //table top
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(0,room_w/6,0, table_l/2,table_top_thickness/2, table_w/2, 0, 0, 1, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   //table top2
-   double table_top_thickness1 = 0.15;
-   double table_l1 = table_l - 0.3;
-   double table_w1 = table_w - 0.3;
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(0,(room_w/6)-(table_top_thickness/2)-(table_top_thickness1/2),0, table_l1/2, table_top_thickness1/2,table_w1/2, 0, 0, 0, 1);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   //table legs
-   double legs_l = room_w/6 - (table_top_thickness/2); 
-   double legs_w = 0.15;
-   double legs_thickness = legs_w;
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(((table_l1/2) + (table_l/2))/2, legs_l/2, ((table_w1/2) + (table_w)/2)/2, legs_thickness/2, legs_l/2, legs_thickness/2, 0, 1, 0, 0); 
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(((table_l1/2) + (table_l/2))/2, legs_l/2, -((table_w1/2) + (table_w)/2)/2, legs_thickness/2, legs_l/2, legs_thickness/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1); 
-   cube(-((table_l1/2) + (table_l/2))/2, legs_l/2, -((table_w1/2) + (table_w)/2)/2, legs_thickness/2, legs_l/2, legs_thickness/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1); 
-   cube(-((table_l1/2) + (table_l/2))/2, legs_l/2, ((table_w1/2) + (table_w)/2)/2, legs_thickness/2, legs_l/2, legs_thickness/2, 0, 1, 0, 0);   
-   glDisable(GL_POLYGON_OFFSET_FILL);
-}
-
-static render_chair(void)
-{
-   double legs_thickness = 0.075;
-   double legs_width = legs_thickness;
-   double legs_height = room_w/9;
-
-   double base_length = 1.0;
-
-   //legs
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(base_length/2,legs_height,-base_length/2, legs_thickness/2, legs_height, legs_thickness/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(-base_length/2,legs_height,-base_length/2, legs_thickness/2, legs_height, legs_thickness/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(-base_length/2+(legs_thickness/1.9),legs_height/2,base_length/2-(legs_thickness/1.9), legs_thickness/2, legs_height/2, legs_thickness/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(base_length/2-(legs_thickness/1.9),legs_height/2,base_length/2-(legs_thickness/1.9), legs_thickness/2, legs_height/2, legs_thickness/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   //base
-   double base_thickness = 1.5*legs_thickness;
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(0,legs_height,0,  base_length/2,base_thickness/2 , base_length/2, 0, 0, 1, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   //back support - horizontal
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(0,(2*legs_height)-(legs_width/2),-base_length/2, base_length/2, legs_thickness/2, legs_thickness/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(0,(1.85*legs_height)-(legs_width/2),-base_length/2, base_length/2, legs_thickness/2, legs_thickness/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(0,(1.2*legs_height)-(legs_width/2),-base_length/2, base_length/2, legs_thickness/2, legs_thickness/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-
-   //back support - vertical
-   glEnable(GL_POLYGON_OFFSET_FILL);
-   glPolygonOffset(1,1);
-   cube(0,(1.525*legs_height)-(legs_width/2),-base_length/2, legs_thickness/2, 0.65*legs_height/2, legs_thickness/2, 0, 1, 0, 0);
-   glDisable(GL_POLYGON_OFFSET_FILL);
-}
-
-static render_lamp(void)
-{
-
-}
+char* mode_desc[] = {"Orthogonal", "Perspective", "First person"};
+char* rendered_objs[] = {" ", "room", "pillars", "tables", "lamp", "chairs", "all ", " "};
 
 /*
  *  OpenGL (GLUT) calls this routine to display the scene
  */
 void display()
 {
-   int i,j,k;
+   double table_top_thickness = 0.05, table_l = 3.0;
    const double len=1.5;  //  Length of axes
    //  Erase the window and the depth buffer
    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -394,7 +60,7 @@ void display()
    //  Undo previous transformations
    glLoadIdentity();
    //  Perspective - set eye position
-   if (mode)
+   if (mode == 1)
    {
       double Ex = -2*dim*Sin(th)*Cos(ph);
       double Ey = +2*dim        *Sin(ph);
@@ -402,26 +68,132 @@ void display()
       gluLookAt(Ex,Ey,Ez , 0,0,0 , 0,Cos(ph),0);
    }
    //  Orthogonal - set world orientation
-   else
+   else if (mode == 0)
    {
       glRotatef(ph,1,0,0);
       glRotatef(th,0,1,0);
    }
+   // First person point of view
+   else if (mode == 2)
+   {
 
-   //Joker chair
-   render_chair();
-   glTranslated(0.0, 0.0, 2.0);
-   glRotated(-180.0,0,1,0);
+   }
+  
+   // Render objects
+   if(render_all == 1)
+   {
+      room_on = 1;
+      pillar_on = 1;
+      table_on = 1;
+      lamp_on = 1;
+      chair_on = 1;
+   }
+   if(render_all == 0)
+   {
+      room_on = 0;
+      pillar_on = 0;
+      table_on = 0;
+      lamp_on = 0;
+      chair_on = 0;
+      render_all = 2;
+   }
+
+   if(room_on == 1){
+      render_room();
+   }
+
+   if(pillar_on == 1){
+      render_pillars();
+   }
+
+   if(table_on == 1)
+   {
+      //Outside tables
+      glPushMatrix();
+      glTranslated(5.0, 0.0, 2.0);
+      glRotated(-90.0,0,1,0);
+      glScaled(2.0,1.0,1.0);
+      render_table();
+      glPopMatrix();  
+
+      glPushMatrix();
+      glTranslated(-5.0, 0.0, 2.0);
+      glRotated(-90.0,0,1,0);
+      glScaled(1.5,1.0,1.0);
+      render_table();
+      glPopMatrix(); 
+
+      glPushMatrix();
+      glTranslated(-5.0, 0.0, -2.5);
+      glRotated(-90.0,0,1,0);
+      render_table();
+      glPopMatrix(); 
+
+      // Inner table at (0,0,0)
+      render_table();
+   }  
+
+   if(lamp_on == 1)
+   {
+       glPushMatrix();
+       glTranslated((-table_l/2)+0.20, room_w/6 + table_top_thickness/2, 0);
+       glScaled(0.20,0.17,0.20);
+       render_lamp();
+       glPopMatrix(); 
+   }  
+   if(chair_on == 1)
+   {
+       //Outside chairs
+       glPushMatrix();
+       glTranslated(6.0, 0.0, 4.0);
+       glRotated(-110.0,0,1,0);
+       render_chair();
+       glPopMatrix();
+
+       glPushMatrix();
+       glTranslated(6.0, 0.0, 2.0);
+       glRotated(-84.0,0,1,0);
+       render_chair();
+       glPopMatrix();
+
+       glPushMatrix();
+       glTranslated(6.0, 0.0, 0.0);
+       glRotated(-65.0,0,1,0);
+       render_chair();
+       glPopMatrix();
+
+       glPushMatrix();
+       glTranslated(-6.0, 0.0, 3.0);
+       glRotated(110.0,0,1,0);
+       render_chair();
+       glPopMatrix();
+
+       glPushMatrix();
+       glTranslated(-6.0, 0.0, 1.0);
+       glRotated(90.0,0,1,0);
+       render_chair();
+       glPopMatrix();
+
+       glPushMatrix();
+       glTranslated(-6.0, 0.0, -2.0);
+       glRotated(100.0,0,1,0);
+       render_chair();
+       glPopMatrix();
+
+       //Joker chair
+       glPushMatrix();
+       glTranslated(0.0, 0.0, -1.0);
+       render_chair();
+       glPopMatrix();
    
-   // Batman chair
-   render_chair();
-   glTranslated(0.0, 0.0, 1.0);
-   render_table();
-
-   render_room();  
-   render_pillars();  
-
-
+       // Batman chair
+       glPushMatrix();
+       glTranslated(0.0, 0.0, 1.0);
+       glRotated(-180.0,0,1,0);
+       render_chair();
+       glPopMatrix();
+   }        
+   
    //  Draw axes
    glColor3f(1,1,1);
    if (axes)
@@ -443,8 +215,10 @@ void display()
       Print("Z");
    }
    //  Display parameters
+   glWindowPos2i(5,25);
+   Print("Recently Rendered: %s",rendered_objs[recent_press]);
    glWindowPos2i(5,5);
-   Print("Angle=%d,%d  Dim=%.1f FOV=%d Projection=%s",th,ph,dim,fov,mode?"Perpective":"Orthogonal:First Person");
+   Print("Angle=%d,%d  Dim=%.1f FOV=%d Projection=%s",th,ph,dim,fov,mode_desc[mode]);
    //  Render the scene and make it visible
    glFlush();
    glutSwapBuffers();
@@ -497,13 +271,44 @@ void key(unsigned char ch,int x,int y)
    else if (ch == 'a' || ch == 'A')
       axes = 1-axes;
    //  Switch display mode
-   else if (ch == 'm' || ch == 'M')
-      mode = 1-mode;
+   else if (ch == 'm' || ch == 'M'){
+      mode = (mode + 1)%3;
+   }
+    
    //  Change field of view angle
    else if (ch == '-' && ch>1)
       fov--;
    else if (ch == '+' && ch<179)
       fov++;
+   else if (ch == '1'){
+      room_on = 1;
+      recent_press = 1;
+   } 
+   else if (ch == '2'){
+      pillar_on = 1;
+      recent_press = 2;
+   } 
+   else if (ch == '3'){
+      table_on = 1;
+      recent_press = 3;
+   } 
+   else if (ch == '4'){
+      lamp_on = 1;
+      recent_press = 4;
+   } 
+   else if (ch == '5'){
+      chair_on = 1;
+      recent_press = 5;
+   } 
+   else if (ch == '6'){
+      render_all = 1;
+      recent_press = 6;
+   } 
+   else if (ch == '7'){
+      render_all = 0;
+      recent_press = 7;
+   } 
+  
    //  Reproject
    Project(mode,fov,asp,dim);
    //  Tell GLUT it is necessary to redisplay the scene

@@ -31,9 +31,11 @@ print.o: print.c CSCIx229.h
 project.o: project.c CSCIx229.h
 errcheck.o: errcheck.c CSCIx229.h
 object.o: object.c CSCIx229.h
+my_shapes.o: my_shapes.c CSCIx229.h
+my_objects.o: my_objects.c CSCIx229.h
 
 #  Create archive
-CSCIx229.a:fatal.o loadtexbmp.o print.o project.o errcheck.o object.o
+CSCIx229.a:fatal.o loadtexbmp.o print.o project.o errcheck.o object.o my_shapes.o my_objects.o
 	ar -rcs $@ $^
 
 # Compile rules
