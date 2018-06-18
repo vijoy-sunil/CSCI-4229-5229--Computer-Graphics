@@ -166,18 +166,6 @@ void render_room(void)
    glVertex3f(room_w/2,0.0,-ground_h + 1.4);
    glVertex3f(room_w/2,0.0,-ground_h);
    glEnd();
-
-   //--------------------------------------------------------------
-   // Draw ceiling  
-/*
-   glColor3f(floors_r,floors_g,floors_b);
-   glBegin(GL_QUADS);
-   glVertex3f(-room_w/2,room_w/2,-room_h);
-   glVertex3f(room_w/2,room_w/2,-room_h);
-   glVertex3f(room_w/2,room_w/2,room_h);
-   glVertex3f(-room_w/2,room_w/2,room_h);
-   glEnd();
-*/
 }
 
 
@@ -185,7 +173,7 @@ void render_room(void)
 
 void render_pillars(void)
 {
-   double pillars_r = 0.90, pillars_g = 0.810, pillars_b = 0.63;
+   double pillars_r = 0.90, pillars_g = 0.810, pillars_b = 0.70;
    double pillar_thickness = 0.4;
 
    //vertical pillars

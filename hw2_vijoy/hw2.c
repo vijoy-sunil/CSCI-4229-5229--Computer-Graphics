@@ -4,20 +4,21 @@
  *  3-D Scene Rendering
  *
  *  Key bindings:
- *  0          Reset 
+ *  0          Reset view angle
  *  1	       Render room
  *  2          Render tables
  *  3          Render lamps, computers
  *  4          Render chairs
- *  5          Render ALL (default on start up)
- *  6          Render OFF
+ *  5	       Render roof
+ *  6          Render ALL (default on start up)
+ *  7          Erase ALL
  *  m          Toggle orthogonal/perspective/first person
- *  a          Toggle axes
+ *  x          Toggle axes
  *  arrows     Change view angle (in ortho/perspective)
  *  PgDn/PgUp  Zoom in and out (in ortho/perspective)
  *  a,s,w,d    Move in first person (forward/backward/left/right)
- *  j,k,i,l    Viwe angle in first person (left/down/up/right)
- *  .          View center of scene
+ *  j,k,i,l    Turn in first person (left/down/up/right)
+ *  .          Go to main door
  *  ESC        Exit
  *  h,H        Toggle help menu
  */
@@ -26,13 +27,13 @@
 int axes=0;       //  Display axes
 int help_on = 0;  //  Toggle help menu
 int mode=0;       //  Projection mode
-int th=180;       //  Azimuth of view angle
-int ph=90;        //  Elevation of view angle
+int th=200;       //  Azimuth of view angle
+int ph=30;        //  Elevation of view angle
 int fov=55;       //  Field of view (for perspective)
 double asp=1;     //  Aspect ratio
 double dim=12.5;  //  Size of world
 
-int room_on = 0, table_on = 0, table_objs_on = 0, chair_on = 0, render_all = 1;
+int room_on = 0, roof_on = 0, table_on = 0, table_objs_on = 0, chair_on = 0, render_all = 1;
 int recent_press = 0;
 
 double room_w = 8.0;
@@ -47,10 +48,11 @@ double ground_w = 16.0;
 double ground_h = 9.0;
 
 char* mode_desc[] = {"Orthogonal", "Perspective", "First person"};
-char* rendered_objs[] = {"all", "room", "tables", "lamps,computers", "chairs", "all ", " "};
+char* rendered_objs[] = {"all", "room", "tables", "lamps,computers", "chairs", "roof", "all ", " "};
 
 //angle of rotation
-float xpos = 0, ypos = 0, zpos = 0, xrot = 0, yrot = 0, angle=0.0;
+//initial view
+float xpos = 0, ypos = 3, zpos = -9, xrot = 0, yrot = 180;
 float xrot_d, yrot_d;
 
 /*
@@ -59,6 +61,7 @@ float xrot_d, yrot_d;
 void display()
 {
    double table_top_thickness = 0.05, table_l = 3.0;
+   double floors_r = 0.60, floors_g = 0.60, floors_b = 0.60;
    const double len=1.5;  //  Length of axes
    //  Erase the window and the depth buffer
    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -93,6 +96,7 @@ void display()
    if(render_all == 1)
    {
       room_on = 1;
+      roof_on = 1;
       table_on = 1;
       table_objs_on = 1;
       chair_on = 1;
@@ -100,6 +104,7 @@ void display()
    if(render_all == 0)
    {
       room_on = 0;
+      roof_on = 0;
       table_on = 0;
       table_objs_on = 0;
       chair_on = 0;
@@ -109,6 +114,17 @@ void display()
    if(room_on == 1){
       render_room();
       render_pillars();
+   }
+
+   if(roof_on == 1)
+   {
+      glColor3f(floors_r,floors_g,floors_b);
+      glBegin(GL_QUADS);
+      glVertex3f(-room_w/2,room_w/2,-room_h);
+      glVertex3f(room_w/2,room_w/2,-room_h);
+      glVertex3f(room_w/2,room_w/2,room_h);
+      glVertex3f(-room_w/2,room_w/2,room_h);
+      glEnd();
    }
 
    if(table_on == 1)
@@ -274,9 +290,9 @@ void display()
    {
       glWindowPos2i(5,45);
       Print("Press [H] or [h] to turn OFF help");
-
       glWindowPos2i(5,65);
-      Print("[a]	Toggle axes");  
+      Print("[.]	Go to main door"); 
+ 
 
       glWindowPos2i(5,85);
       Print("[j,k,i,l]	turn left/down/up/right [in first-person]"); 
@@ -290,10 +306,11 @@ void display()
       glWindowPos2i(5,165);
       Print("[m]	orthogonal / perspective / first-person");
 
+
       glWindowPos2i(5,185);
-      Print("[6]	Render NONE"); 
+      Print("[6]	Render ALL (default)"); 
       glWindowPos2i(5,205);
-      Print("[5]	Render ALL"); 
+      Print("[5]	Render roof"); 
       glWindowPos2i(5,225);
       Print("[4]	Render chairs"); 
       glWindowPos2i(5,245);
@@ -303,10 +320,12 @@ void display()
       glWindowPos2i(5,285);
       Print("[1]	Render room");  
       glWindowPos2i(5,305);
-      Print("[0]	Reset all"); 
+      Print("[0]	Reset view angle"); 
       glWindowPos2i(5,325);
-      Print("[.]	Default view"); 
+      Print("[7]	Erase ALL"); 
       glWindowPos2i(5,345);
+      Print("[x]	Toggle axes"); 
+      glWindowPos2i(5,365);
       Print("[ESC]	Exit");  
    }
 
@@ -358,9 +377,15 @@ void key(unsigned char ch,int x,int y)
 
    //  Reset all view (on startup)
    else if (ch == '0'){
-      th = 180;
-      ph = 90;
+      th = 200;
+      ph = 30;
       dim = 12.5;
+
+      xrot = 0;
+      yrot = 180;
+      xpos = 0;
+      ypos = 3;
+      zpos =-9; 
    }
 
    // Main view
@@ -368,6 +393,7 @@ void key(unsigned char ch,int x,int y)
       dim = 5.2;
       th = 180;
       ph = 15; 
+
 
       xrot = 0;
       yrot = 180;
@@ -406,14 +432,18 @@ void key(unsigned char ch,int x,int y)
    else if (ch == '4'){
       chair_on = 1;
       recent_press = 4;
-   } 
+   }
    else if (ch == '5'){
-      render_all = 1;
+      roof_on = 1;
       recent_press = 5;
    } 
    else if (ch == '6'){
-      render_all = 0;
+      render_all = 1;
       recent_press = 6;
+   } 
+   else if (ch == '7'){
+      render_all = 0;
+      recent_press = 7;
    } 
 
    // FP view
