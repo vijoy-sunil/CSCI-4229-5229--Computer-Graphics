@@ -1,0 +1,33 @@
+
+Homework #2 - Vijoy Sunil Kumar
+CSCI4229/5229 Summer 2018
+
+3-D Scene Rendering: INTERROGATION ROOM
+
+Scene Description: 
+This is based on the Interrogation room in 'The Dark Knight' movie where Batman questions the Joker.
+(image: ./dk.jpg) 
+
+
+Key bindings:
+ *  0          Reset view angle
+ *  1	       Render room
+ *  2          Render tables
+ *  3          Render lamps, computers
+ *  4          Render chairs
+ *  5	       Render roof
+ *  6          Render ALL (default on start up)
+ *  7          Erase ALL
+ *  m          Toggle orthogonal/perspective/first person
+ *  x          Toggle axes
+ *  arrows     Change view angle (in ortho/perspective)
+ *  PgDn/PgUp  Zoom in and out (in ortho/perspective)
+ *  a,s,w,d    Move in first person (forward/backward/left/right)
+ *  j,k,i,l    Turn in first person (left/down/up/right)
+ *  .          Go to main door
+ *  ESC        Exit
+ *  h,H        Toggle help menu
+
+Time taken to complete this assignment: approx 15 hours
+
+
