@@ -379,17 +379,16 @@ void render_chair(void)
 void render_lamp(void)
 {
    double cone_r = 0.30, cone_g = 0.30, cone_b = 0.30;
-   double cylinder_h = 0.3;
-   //base cylinder
+   double cube_h1 = 0.3, cube_w1 = 1.0;
+   //base cube
    glPushMatrix();
-   glTranslated(0.0, 0.0, 0.0);
-   glRotated(270.0,1,0,0);
-   draw_cylinder(1.0, cylinder_h, 140, 140, 140, texture[8]);
+   cube(0, (cube_h1/2), 0, cube_w1/2, cube_h1/2, cube_w1/2, 0, cone_r, cone_g, cone_b, texture[6], 1,1,1,1,1,1);
    glPopMatrix();
 
-   //cube on top of cylinder
+   //cube on top of cube
    double cube_h = 0.3;
    double cube_w = 0.7;
+   double cylinder_h = 0.3;
    glEnable(GL_POLYGON_OFFSET_FILL);
    glPolygonOffset(1,1);
    cube(0, cylinder_h + (cube_h/2), 0, cube_w/2, cube_h/2, cube_w/2, 0, cone_r, cone_g, cone_b, texture[6], 1,1,1,1,1,1);
