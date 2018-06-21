@@ -244,25 +244,26 @@ void draw_cylinder(float radius,float height,
     while( angle < 2*PI ) {
        x = radius * cos(angle);
        y = radius * sin(angle);
-       glTexCoord2f(0.0, 0.0); glVertex3f(x, y , height);
-       glTexCoord2f(0.0, rep); glVertex3f(x, y , 0.0);
+       const float tc = ( angle / (float)( 2 * PI ) );
+       glTexCoord2f(tc, 1.0); glVertex3f(x, y , height);
+       glTexCoord2f(tc, 0.0); glVertex3f(x, y , 0.0);
        angle = angle + angle_stepsize;
     }
-    glTexCoord2f(rep, rep); glVertex3f(radius, 0.0, height);
-    glTexCoord2f(0.0, rep); glVertex3f(radius, 0.0, 0.0);
+    glTexCoord2f(0.0, 1.0); 
+    glVertex3f(radius, 0.0, height);
+    glTexCoord2f(0.0, 0.0); 
+    glVertex3f(radius, 0.0, 0.0);
     glEnd();
 
     /** Draw the circle on top of cylinder */
     glColor3ub(R,G,B);
-    glBegin(GL_POLYGON);
-    angle = 0.0;
-    while( angle < 2*PI ) {
-        x = radius * cos(angle);
-        y = radius * sin(angle);
-        glVertex3f(x, y , height);
-        angle = angle + angle_stepsize;
+    glBegin(GL_TRIANGLE_FAN);
+    glTexCoord2f(0.5,0.5); glVertex3f(0,0,height);
+    for (int k=0;k<=360;k+=10)
+    {
+       glTexCoord2f(rep/2*Cos(k)+0.5,rep/2*Sin(k)+0.5);
+       glVertex3f(Cos(k),Sin(k), height);
     }
-    glVertex3f(radius, 0.0, height);
     glDisable(GL_TEXTURE_2D);
     glEnd();
 

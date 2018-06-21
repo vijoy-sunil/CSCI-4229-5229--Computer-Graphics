@@ -1,5 +1,5 @@
 /*
- *  Homework #2 - Vijoy Sunil Kumar
+ *  Homework #3 - Vijoy Sunil Kumar
  *
  *  3-D Scene Rendering - Lighting and Textures
  *
@@ -358,8 +358,6 @@ void display()
        render_chair();
        glPopMatrix();
    } 
-
-   render_lamp();
 
    //  Draw axes - no lighting from here on
    glDisable(GL_LIGHTING);
@@ -743,16 +741,18 @@ int main(int argc,char* argv[])
    glutSpecialFunc(special);
    glutKeyboardFunc(key);
    //  Load textures
-   texture[0] = LoadTexBMP("./textures/floor_2.bmp");
+   texture[0] = LoadTexBMP("./textures/floor.bmp");
    texture[1] = LoadTexBMP("./textures/pillar.bmp");
    texture[2] = LoadTexBMP("./textures/wall.bmp");
    texture[3] = LoadTexBMP("./textures/table.bmp");
    texture[4] = LoadTexBMP("./textures/chair.bmp");
    texture[5] = LoadTexBMP("./textures/chair_top.bmp");
-   texture[6] = LoadTexBMP("./textures/lamp_2.bmp");
+
+   texture[6] = LoadTexBMP("./textures/lamp.bmp");
    texture[7] = LoadTexBMP("./textures/lamp_top.bmp");
-   texture[8] = LoadTexBMP("./textures/lamp_base.bmp");
+   texture[8] = LoadTexBMP("./textures/lamp_base2.bmp");
    texture[9] = LoadTexBMP("./textures/lamp_sphere.bmp");
+
    texture[10] = LoadTexBMP("./textures/laptop_base.bmp");
    texture[11] = LoadTexBMP("./textures/laptop_top.bmp");
 

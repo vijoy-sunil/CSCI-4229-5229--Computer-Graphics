@@ -384,7 +384,7 @@ void render_lamp(void)
    glPushMatrix();
    glTranslated(0.0, 0.0, 0.0);
    glRotated(270.0,1,0,0);
-   draw_cylinder(1.0, cylinder_h, 140, 140, 140, texture[6]);
+   draw_cylinder(1.0, cylinder_h, 140, 140, 140, texture[8]);
    glPopMatrix();
 
    //cube on top of cylinder
@@ -403,14 +403,14 @@ void render_lamp(void)
    glTranslated(0.0, cylinder_h+cube_h, 0.0);
    glRotated(-90.0,1,0,0);
    glScaled(0.35,0.35,1.0);
-   draw_cone(cone_h, 1.0,0.180,0.180,0.180, texture[8]);
+   draw_cone(cone_h, 1.0,0.180,0.180,0.180, texture[6]);
    glPopMatrix();
    glDisable(GL_POLYGON_OFFSET_FILL); 
 
 
    //sphere on top of cube
    double sphere_r = cube_w/2;
-   sphere(0,cylinder_h+cube_h+sphere_r+cone_h-0.1,0, sphere_r, cone_r, texture[6]);
+   sphere(0,cylinder_h+cube_h+sphere_r+cone_h-0.1,0, sphere_r, cone_r, texture[9]);
 
    //rod1
    double rod_w = 0.2;
@@ -425,7 +425,7 @@ void render_lamp(void)
    //sphere connected to rod1
    glPushMatrix();
    glTranslated(-rod_h,2.4, 0);
-   sphere(0,0,0, sphere_r, cone_r, texture[6]);
+   sphere(0,0,0, sphere_r, cone_r, texture[9]);
    glPopMatrix();
 
    //rod2
@@ -438,7 +438,7 @@ void render_lamp(void)
    //sphere connected to rod2
    glPushMatrix();
    glTranslated(0,3.4, 0);
-   sphere(0,0,0, sphere_r, cone_r, texture[6]);
+   sphere(0,0,0, sphere_r, cone_r, texture[9]);
    glPopMatrix();
 
    //rod3
@@ -450,7 +450,7 @@ void render_lamp(void)
    //sphere
    glPushMatrix();
    glTranslated(rod_h/2,3.4, 0);
-   sphere(0,0,0, sphere_r, cone_r, texture[6]);
+   sphere(0,0,0, sphere_r, cone_r, texture[9]);
    glPopMatrix();
 
    //cone
@@ -461,7 +461,7 @@ void render_lamp(void)
    glTranslated(rod_h/2,2.0, 0);
    glRotated(-90.0,1,0,0);
    glScaled(1.0,1.0,1.0);
-   draw_cone(cone_h2, 1.0,0.180,0.180,0.180, texture[8]);
+   draw_cone(cone_h2, 1.0,0.180,0.180,0.180, texture[7]);
    glPopMatrix();
    glDisable(GL_POLYGON_OFFSET_FILL); 
 }
