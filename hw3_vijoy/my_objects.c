@@ -9,6 +9,8 @@ extern double ground_w, ground_h;
 extern double rep;
 extern int ntex;
 extern unsigned int texture[12]; 
+extern float shiny;
+extern int emission;
 
 void render_room(void)
 {
@@ -16,6 +18,14 @@ void render_room(void)
    //glPolygonOffset(1,1);
    double walls_r = 0.90, walls_g = 0.810, walls_b = 0.70;
    double floors_r = 0.60, floors_g = 0.60, floors_b = 0.60;
+
+   //  Set specular color to white
+   float white[] = {1,1,1,1};
+   float Emission[]  = {0.0,0.0,0.01*emission,1.0};
+   glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shiny);
+   glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,white);
+   glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,Emission);
+
    //--------------------------------------------------------------
    // Draw floor
    glColor3f(floors_r,floors_g,floors_b);
@@ -30,6 +40,8 @@ void render_room(void)
    
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[0]);					
    glBegin(GL_QUADS);
+   glNormal3f( 0, 1, 0);
+
    glTexCoord2f(0.0,0.0); 	glVertex3f(-ground_w/2,0.0,room_h);
    glTexCoord2f(rep,0.0); 	glVertex3f(-ground_w/2,0.0,-ground_h);
    glTexCoord2f(rep,rep); 	glVertex3f(ground_w/2,0.0,-ground_h);
@@ -42,6 +54,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);					
    glBegin(GL_QUADS);
+   glNormal3f( 1, 0, 0);   
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(-room_w/2,0.0,room_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(-room_w/2,room_w/3.9,room_h);
    glTexCoord2f(rep, rep);	glVertex3f(-room_w/2,room_w/3.9,-room_h);
@@ -52,6 +66,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);	
    glBegin(GL_QUADS);
+   glNormal3f( 1, 0, 0);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(-room_w/2,room_w/2,room_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(-room_w/2,room_w/2,-room_h);
    glTexCoord2f(rep, rep);	glVertex3f(-room_w/2,(room_w/2)-0.3,-room_h);
@@ -62,6 +78,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);	
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);
    glBegin(GL_QUADS);
+   glNormal3f( 1, 0, 0);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(-ground_w/2,0.0,room_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(-ground_w/2,room_w/2,room_h);
    glTexCoord2f(rep, rep);	glVertex3f(-ground_w/2,room_w/2,-ground_h);
@@ -73,6 +91,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);	
    glBegin(GL_QUADS);
+   glNormal3f( -1, 0, 0);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(room_w/2,0.0,room_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(room_w/2,room_w/3.9,room_h);
    glTexCoord2f(rep, rep);	glVertex3f(room_w/2,room_w/3.9,-room_h);
@@ -83,6 +103,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);	
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);
    glBegin(GL_QUADS);
+   glNormal3f( -1, 0, 0);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(room_w/2,room_w/2,room_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(room_w/2,room_w/2,-room_h);
    glTexCoord2f(rep, rep);	glVertex3f(room_w/2,(room_w/2)-0.3,-room_h);
@@ -93,6 +115,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);	
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);
    glBegin(GL_QUADS);
+   glNormal3f( -1, 0, 0);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(ground_w/2,0.0,room_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(ground_w/2,room_w/2,room_h);
    glTexCoord2f(rep, rep);	glVertex3f(ground_w/2,room_w/2,-ground_h);
@@ -104,6 +128,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);	
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);
    glBegin(GL_QUADS);
+   glNormal3f( 0, 0, -1);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(-ground_w/2,0.0,room_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(-ground_w/2,room_w/2,room_h);
    glTexCoord2f(rep, rep);	glVertex3f(ground_w/2,room_w/2,room_h);
@@ -115,6 +141,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);	
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);
    glBegin(GL_QUADS);
+   glNormal3f( 0, 0, 1);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(-room_w/2,0.0,-room_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(-room_w/2,room_w/2,-room_h);
    glTexCoord2f(rep, rep);	glVertex3f(-door_w/2,room_w/2,-room_h);
@@ -124,6 +152,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);	
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);
    glBegin(GL_QUADS);
+   glNormal3f( 0, 0, 1);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(room_w/2,0.0,-room_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(room_w/2,room_w/2,-room_h);
    glTexCoord2f(rep, rep);	glVertex3f(door_w/2,room_w/2,-room_h);
@@ -133,6 +163,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);	
    glBegin(GL_QUADS);
+   glNormal3f( 0, 0, 1);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(-door_w/2,room_w/2,-room_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(door_w/2,room_w/2,-room_h);
    glTexCoord2f(rep, rep);	glVertex3f(door_w/2,door_h,-room_h);
@@ -143,6 +175,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);	
    glBegin(GL_QUADS);
+   glNormal3f( 0, 0, 1);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(-ground_w/2,0.0,-ground_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(-ground_w/2,room_w/2,-ground_h);
    glTexCoord2f(rep, rep);	glVertex3f(-room_w/2,room_w/2,-ground_h);
@@ -153,6 +187,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);	
    glBegin(GL_QUADS);
+   glNormal3f( 1, 0, 0);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(-room_w/2,room_w/2,-ground_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(-room_w/2,room_w/2,-room_h);
    glTexCoord2f(rep, rep);	glVertex3f(-room_w/2,door_h,-room_h);
@@ -162,6 +198,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);	
    glBegin(GL_QUADS);
+   glNormal3f( 1, 0, 0);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(-room_w/2,door_h,-ground_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(-room_w/2,door_h,-ground_h + 1.4);
    glTexCoord2f(rep, rep);	glVertex3f(-room_w/2,0.0,-ground_h + 1.4);
@@ -172,6 +210,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);	
    glBegin(GL_QUADS);
+   glNormal3f( 0, 0, 1);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(ground_w/2,0.0,-ground_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(ground_w/2,room_w/2,-ground_h);
    glTexCoord2f(rep, rep);	glVertex3f(room_w/2,room_w/2,-ground_h);
@@ -182,6 +222,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);	
    glBegin(GL_QUADS);
+   glNormal3f( -1, 0, 0);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(room_w/2,room_w/2,-ground_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(room_w/2,room_w/2,-room_h);
    glTexCoord2f(rep, rep);	glVertex3f(room_w/2,door_h,-room_h);
@@ -191,6 +233,8 @@ void render_room(void)
    glColor3f(walls_r,walls_g,walls_b);
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[2]);	
    glBegin(GL_QUADS);
+   glNormal3f( -1, 0, 0);
+
    glTexCoord2f(0.0, 0.0);	glVertex3f(room_w/2,door_h,-ground_h);
    glTexCoord2f(rep, 0.0);	glVertex3f(room_w/2,door_h,-ground_h + 1.4);
    glTexCoord2f(rep, rep);	glVertex3f(room_w/2,0.0,-ground_h + 1.4);

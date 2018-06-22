@@ -3,6 +3,9 @@
 
 extern int ntex, mode;
 double rep;
+extern float shiny;
+extern int emission;
+
 /*
  *  Draw vertex in polar coordinates
  */
@@ -11,6 +14,7 @@ void Vertex(double th,double ph, double rgb)
    //glColor3f(Cos(th)*Cos(th) , Sin(ph)*Sin(ph) , Sin(th)*Sin(th));
    glColor3f(rgb, rgb, rgb);
    glVertex3d(Sin(th)*Cos(ph) , Sin(ph) , Cos(th)*Cos(ph));
+   glNormal3d(Sin(th)*Cos(ph) , Sin(ph) , Cos(th)*Cos(ph));
 }
 
 /*
@@ -22,7 +26,12 @@ void sphere(double x,double y,double z,double r, double rgb, unsigned int textur
 {
    const int d=5;
    int th,ph;
-   
+
+   float yellow[] = {1.0,1.0,0.0,1.0};
+   float Emission[]  = {0.0,0.0,0.01*emission,1.0}; 
+   glMaterialf(GL_FRONT,GL_SHININESS,shiny);
+   glMaterialfv(GL_FRONT,GL_SPECULAR,yellow);
+   glMaterialfv(GL_FRONT,GL_EMISSION,Emission);  
    
    //  Save transformation
    glPushMatrix();
@@ -38,6 +47,7 @@ void sphere(double x,double y,double z,double r, double rgb, unsigned int textur
       glEnable(GL_TEXTURE_2D);
    }
 
+   glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,mode?GL_REPLACE:GL_MODULATE);
    glBindTexture(GL_TEXTURE_2D,texture);
    if (ntex) glBindTexture(GL_TEXTURE_2D,texture);
    //  Latitude bands
@@ -71,12 +81,11 @@ void cube(double x,double y,double z,
                  double th, double r, double g, double b,
 		 unsigned int texture, int top, int bottom, int front, int back, int left, int right)
 {
-   //  Set specular color to white
-   //float white[] = {1,1,1,1};
-   //float Emission[]  = {0.0,0.0,0.01*emission,1.0};
-   //glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shiny);
-   //glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,white);
-   //glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,Emission);
+   float yellow[] = {1.0,1.0,0.0,1.0};
+   float Emission[]  = {0.0,0.0,0.01*emission,1.0}; 
+   glMaterialf(GL_FRONT,GL_SHININESS,shiny);
+   glMaterialfv(GL_FRONT,GL_SPECULAR,yellow);
+   glMaterialfv(GL_FRONT,GL_EMISSION,Emission); 
    //  Save transformation
    glPushMatrix();
 
@@ -95,6 +104,7 @@ void cube(double x,double y,double z,
    }
 
    glColor3f(r,g,b);
+   glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,mode?GL_REPLACE:GL_MODULATE);
    glBindTexture(GL_TEXTURE_2D,texture);
    //  Front
    if (ntex) glBindTexture(GL_TEXTURE_2D,texture);
@@ -236,6 +246,8 @@ void draw_cylinder(float radius,float height,
 
     /** Draw the tube */
     glColor3ub(R-40,G-40,B-40);
+
+    glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,mode?GL_REPLACE:GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D,texture);
     if (ntex) glBindTexture(GL_TEXTURE_2D,texture);
     glBegin(GL_QUAD_STRIP);
@@ -272,6 +284,12 @@ void draw_cylinder(float radius,float height,
 void draw_cone(double height, double radius, double r, double g, double b, unsigned int texture)
 {
    int k = 0;
+   float yellow[] = {1.0,1.0,0.0,1.0};
+   float Emission[]  = {0.0,0.0,0.01*emission,1.0}; 
+   glMaterialf(GL_FRONT,GL_SHININESS,shiny);
+   glMaterialfv(GL_FRONT,GL_SPECULAR,yellow);
+   glMaterialfv(GL_FRONT,GL_EMISSION,Emission); 
+
     //sides
     //  Enable textures
     //  Select texture if textures are on
@@ -281,13 +299,18 @@ void draw_cone(double height, double radius, double r, double g, double b, unsig
     {
        glEnable(GL_TEXTURE_2D);
     }
+
+    glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,mode?GL_REPLACE:GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D,texture);
     if (ntex) glBindTexture(GL_TEXTURE_2D,texture);
 
     glColor3f(r,g,b);
     glBegin(GL_TRIANGLE_FAN);
+
     glTexCoord2f(0.5, 0.5); glVertex3f(0,0,height);
-    for (k=0;k<=360;k+=5){     
+    for (k=0;k<=360;k+=5){  
+
+      glNormal3f(Cos(k),Sin(k), 0);   
       glTexCoord2f(rep/2*Cos(k)+0.5,rep/2*Sin(k)+0.5);
       glVertex2f(Cos(k),Sin(k));
     }

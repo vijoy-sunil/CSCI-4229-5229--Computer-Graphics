@@ -54,7 +54,7 @@ int light=0;      //  Lighting
 
 // Light values
 int one       =   1;  // Unit value
-int distance  =   5;  // Light distance
+int distance  =   3;  // Light distance
 int inc       =  10;  // Ball increment
 int smooth    =   1;  // Smooth/Flat shading
 int local     =   0;  // Local Viewer Model
@@ -178,7 +178,7 @@ void display()
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
    }
-//-------------------------------------------------------------------------------------------------
+
    //  Flat or smooth shading
    glShadeModel(smooth ? GL_SMOOTH : GL_FLAT);
 
@@ -213,7 +213,7 @@ void display()
    }
    else
      glDisable(GL_LIGHTING);
-//------------------------------------------------------------------------------------------------
+
   
    // Render objects
    if(render_all == 1)
@@ -374,6 +374,13 @@ void display()
        render_chair();
        glPopMatrix();
    } 
+
+   //render_room();
+   //render_pillars();
+   //render_chair();
+   //render_lamp();
+   //render_computer();
+   //render_table();
 
    //  Draw axes - no lighting from here on
    glDisable(GL_LIGHTING);
