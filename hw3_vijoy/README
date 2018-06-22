@@ -9,7 +9,6 @@ This is based on the Interrogation room in 'The Dark Knight' movie where Batman 
 (image: ./dk.jpg) 
 
 
-Key bindings:
  *  0          Reset view angle
  *  1	       Render room
  *  2          Render tables
@@ -26,8 +25,25 @@ Key bindings:
  *  j,k,i,l    Turn in first person (left/down/up/right)
  *  .          Go to main door
  *  ESC        Exit
- *  h,H        Toggle help menu
+ *  ?          Toggle help menu
+ *-----------------
+ * Texture control
+ *-----------------
+ * &	       Toggle texture
+ *-----------------
+ * Lighting control
+ * ----------------
+ * *	       Toggle light
+ * y/Y	       Toggle light movement
+ * <,>	       left/right light movement
+ * [,]	       up/down light movement
+ * t/T	       tune ambient level
+ * f,F	       tune diffuse level
+ * g,G	       tune specular level
+ * h,H	       tune emission level
+ * r,R	       tune shininess level
 
-Time taken to complete this assignment: approx 15 hours
+
+Time taken to complete this assignment: 
 
 

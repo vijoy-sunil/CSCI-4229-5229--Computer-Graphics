@@ -20,7 +20,23 @@
  *  j,k,i,l    Turn in first person (left/down/up/right)
  *  .          Go to main door
  *  ESC        Exit
- *  h,H        Toggle help menu
+ *  ?          Toggle help menu
+
+ * Texture control
+ *-----------------
+ * &	       Toggle texture
+ *
+ * Lighting control
+ * ----------------
+ * *	       Toggle light
+ * y/Y	       Toggle light movement
+ * <,>	       left/right light movement
+ * [,]	       up/down light movement
+ * t/T	       tune ambient level
+ * f,F	       tune diffuse level
+ * g,G	       tune specular level
+ * h,H	       tune emission level
+ * r,R	       tune shininess level
  */
 #include "CSCIx229.h"
 
@@ -384,8 +400,17 @@ void display()
       Print("Z");
    }
    //  Display parameters
-   glWindowPos2i(5,25);
+   glWindowPos2i(5,45);
    Print("Recently Rendered: %s",rendered_objs[recent_press]);
+   if(light == 1){
+      glWindowPos2i(5,25);
+      Print("Ambient=%d  Diffuse=%d Specular=%d Emission=%d Shininess=%.0f",ambient,diffuse,specular,emission,shiny);
+   }
+   else{
+      glWindowPos2i(5,25);
+      Print("Lighting: OFF");
+   }
+
    if(mode <= 1){
      glWindowPos2i(5,5);
      Print("Angle=%d,%d  Dim=%.1f FOV=%d Projection=%s",th,ph,dim,fov,mode_desc[mode]);
@@ -403,50 +428,84 @@ void display()
 
    // Help menu
    if(help_on == 0){
-      glWindowPos2i(5,45);
-      Print("For help, press [H] or [h]");
+      glWindowPos2i(5,65);
+      Print("For help, press [?]");
    }
+
+   //page 1/2 of help
    if(help_on == 1)
    {
-      glWindowPos2i(5,45);
-      Print("Press [H] or [h] to turn OFF help");
       glWindowPos2i(5,65);
+      Print("Press [?] for page 2/2");
+      glWindowPos2i(5,85);
       Print("[.]	Go to main door"); 
  
 
-      glWindowPos2i(5,85);
-      Print("[j,k,i,l]	turn left/down/up/right [in first-person]"); 
       glWindowPos2i(5,105);
+      Print("[j,k,i,l]	turn left/down/up/right [in first-person]"); 
+      glWindowPos2i(5,125);
       Print("[a,s,w,d]	move forward/backward/left/right [in first-person]"); 
 
-      glWindowPos2i(5,125);
-      Print("[PgDn/PgUp]	Zoom in and out [in ortho or perspective]"); 
       glWindowPos2i(5,145);
-      Print("[arrows]	Change view angle [in ortho or perspective]"); 
+      Print("[PgDn/PgUp]	Zoom in and out [in ortho or perspective]"); 
       glWindowPos2i(5,165);
+      Print("[arrows]	Change view angle [in ortho or perspective]"); 
+      glWindowPos2i(5,185);
       Print("[m]	orthogonal / perspective / first-person");
 
 
-      glWindowPos2i(5,185);
-      Print("[6]	Render ALL (default)"); 
       glWindowPos2i(5,205);
-      Print("[5]	Render roof"); 
+      Print("[6]	Render ALL (default)"); 
       glWindowPos2i(5,225);
-      Print("[4]	Render chairs"); 
+      Print("[5]	Render roof"); 
       glWindowPos2i(5,245);
-      Print("[3]	Render lamps,computers"); 
+      Print("[4]	Render chairs"); 
       glWindowPos2i(5,265);
-      Print("[2]	Render tables"); 
+      Print("[3]	Render lamps,computers"); 
       glWindowPos2i(5,285);
-      Print("[1]	Render room");  
+      Print("[2]	Render tables"); 
       glWindowPos2i(5,305);
-      Print("[0]	Reset view angle"); 
+      Print("[1]	Render room");  
       glWindowPos2i(5,325);
-      Print("[7]	Erase ALL"); 
+      Print("[0]	Reset view angle"); 
       glWindowPos2i(5,345);
-      Print("[x]	Toggle axes"); 
+      Print("[7]	Erase ALL"); 
       glWindowPos2i(5,365);
+      Print("[x]	Toggle axes"); 
+      glWindowPos2i(5,385);
       Print("[ESC]	Exit");  
+   }
+   
+   //page 2/2 of help
+   if(help_on == 2)
+   {
+      glWindowPos2i(5,65);
+      Print("Press [?] to turn OFF help");
+      glWindowPos2i(5,85);
+      Print("[y]	Toggle light movement"); 
+ 
+
+      glWindowPos2i(5,105);
+      Print("[<.>]	Move light left/right"); 
+      glWindowPos2i(5,125);
+      Print("[[,]]	Move light up/down"); 
+
+      glWindowPos2i(5,145);
+      Print("[t,T]	Tune ambient level"); 
+      glWindowPos2i(5,165);
+      Print("[f,F]	Tune diffuse level"); 
+      glWindowPos2i(5,185);
+      Print("[g,G]	Tune specular level");
+
+
+      glWindowPos2i(5,205);
+      Print("[h,H]	Tune emission level"); 
+      glWindowPos2i(5,225);
+      Print("[r,R]	Tune shininess level"); 
+      glWindowPos2i(5,245);
+      Print("[*]	Toggle lights"); 
+      glWindowPos2i(5,265);
+      Print("[&]	Toggle texture"); 
    }
 
    //  Render the scene and make it visible
@@ -521,7 +580,7 @@ void key(unsigned char ch,int x,int y)
    if (ch == 27)
       exit(0);
 
-   //  Reset all view (on startup)
+   //  Reset all 
    else if (ch == '0'){
       th = 200;
       ph = 30;
@@ -532,6 +591,15 @@ void key(unsigned char ch,int x,int y)
       xpos = 0;
       ypos = 3;
       zpos =-9; 
+
+      emission  =   0;  
+      ambient   =  30;  
+      diffuse   = 100;  
+      specular  =   0;  
+      shininess =   0;  
+      shiny     =   1;  
+      zh        =  90;  
+      ylight    =   0;  
    }
 
    // Main view
@@ -547,8 +615,8 @@ void key(unsigned char ch,int x,int y)
       ypos = 3;
       zpos =-9;  
    }
-   else if (ch == 'h' || ch == 'H')
-      help_on = !help_on;
+   else if (ch == '?')
+      help_on = (help_on + 1)%3;
 
    //  Toggle axes
    else if (ch == 'x' || ch == 'X')
@@ -651,10 +719,10 @@ void key(unsigned char ch,int x,int y)
       zpos -= (sin(yrotrad)) * 0.2;
    }
 
-   else if (ch == 'y' || ch == 'Y')
+   else if (ch == '*')
       light = 1-light;
    //  Toggle light movement
-   else if (ch == '*')
+   else if (ch == 'y' || ch == 'Y')
       move = 1-move;
    //  Move light
    else if (ch == '<')
