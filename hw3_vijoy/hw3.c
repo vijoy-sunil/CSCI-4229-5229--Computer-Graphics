@@ -50,29 +50,30 @@ double asp=1;     //  Aspect ratio
 double dim=12.5;  //  Size of world
 
 int move=1;       //  Move light
-int light=0;      //  Lighting
+int light=1;      //  Lighting
 
 // Light values
 int one       =   1;  // Unit value
-int distance  =   3;  // Light distance
+int distance  =   4;  // Light distance
 int inc       =  10;  // Ball increment
 int smooth    =   1;  // Smooth/Flat shading
 int local     =   0;  // Local Viewer Model
 int emission  =   0;  // Emission intensity (%)
-int ambient   =  30;  // Ambient intensity (%)
+int ambient   =  60;  // Ambient intensity (%)
 int diffuse   = 100;  // Diffuse intensity (%)
 int specular  =   0;  // Specular intensity (%)
 int shininess =   0;  // Shininess (power of two)
 float shiny   =   1;  // Shininess (value)
 int zh        =  90;  // Light azimuth
-float ylight  =   0;  // Elevation of light
+float ylight  =   4;  // Elevation of light
 
 // Texture
 unsigned int texture[12];  //  Texture names
-int ntex=0;    //  Texture
-double rep=1;  //  Repetition
+int ntex=0;    		//  Texture
+double rep=1;  		//  Repetition
+int t_mode = 0;		// texture mode - replace/modulate
 
-int room_on = 0, roof_on = 0, table_on = 0, table_objs_on = 0, chair_on = 0, render_all = 1;
+int room_on = 0, roof_on = 0, table_on = 0, table_objs_on = 0, chair_on = 0, render_all = 2;
 int recent_press = 0;
 
 double room_w = 8.0;
@@ -174,7 +175,7 @@ void display()
    else
    {
       glEnable(GL_TEXTURE_2D);
-      glTexEnvi(GL_TEXTURE_ENV , GL_TEXTURE_ENV_MODE , mode?GL_REPLACE:GL_MODULATE);
+      glTexEnvi(GL_TEXTURE_ENV , GL_TEXTURE_ENV_MODE , t_mode?GL_REPLACE:GL_MODULATE);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
    }
@@ -199,7 +200,7 @@ void display()
         //  Enable lighting
         glEnable(GL_LIGHTING);
         //  Location of viewer for specular calculations
-        glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER,local);
+        //glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER,local);
         //  glColor sets ambient and diffuse color materials
         glColorMaterial(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
         glEnable(GL_COLOR_MATERIAL);
@@ -224,6 +225,16 @@ void display()
       table_objs_on = 1;
       chair_on = 1;
    }
+
+   // default - no roof
+   if(render_all == 2)
+   {
+      room_on = 1;
+      roof_on = 0;
+      table_on = 1;
+      table_objs_on = 1;
+      chair_on = 1;
+   }
    if(render_all == 0)
    {
       room_on = 0;
@@ -231,7 +242,7 @@ void display()
       table_on = 0;
       table_objs_on = 0;
       chair_on = 0;
-      render_all = 2;
+      render_all = 3;
    }
 
    if(room_on == 1){
@@ -600,13 +611,14 @@ void key(unsigned char ch,int x,int y)
       zpos =-9; 
 
       emission  =   0;  
-      ambient   =  30;  
+      ambient   =  60;  
       diffuse   = 100;  
       specular  =   0;  
       shininess =   0;  
       shiny     =   1;  
-      zh        =  90;  
-      ylight    =   0;  
+      zh        =  90;
+      distance  =   4;  
+      ylight    =   4;  
    }
 
    // Main view

@@ -1,7 +1,7 @@
 
 #include "CSCIx229.h"
 
-extern int ntex, mode;
+extern int ntex, mode, t_mode;
 double rep;
 extern float shiny;
 extern int emission;
@@ -47,7 +47,7 @@ void sphere(double x,double y,double z,double r, double rgb, unsigned int textur
       glEnable(GL_TEXTURE_2D);
    }
 
-   glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,mode?GL_REPLACE:GL_MODULATE);
+   glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,t_mode?GL_REPLACE:GL_MODULATE);
    glBindTexture(GL_TEXTURE_2D,texture);
    if (ntex) glBindTexture(GL_TEXTURE_2D,texture);
    //  Latitude bands
@@ -104,7 +104,7 @@ void cube(double x,double y,double z,
    }
 
    glColor3f(r,g,b);
-   glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,mode?GL_REPLACE:GL_MODULATE);
+   glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,t_mode?GL_REPLACE:GL_MODULATE);
    glBindTexture(GL_TEXTURE_2D,texture);
    //  Front
    if (ntex) glBindTexture(GL_TEXTURE_2D,texture);
@@ -247,7 +247,7 @@ void draw_cylinder(float radius,float height,
     /** Draw the tube */
     glColor3ub(R-40,G-40,B-40);
 
-    glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,mode?GL_REPLACE:GL_MODULATE);
+    glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,t_mode?GL_REPLACE:GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D,texture);
     if (ntex) glBindTexture(GL_TEXTURE_2D,texture);
     glBegin(GL_QUAD_STRIP);
@@ -300,7 +300,7 @@ void draw_cone(double height, double radius, double r, double g, double b, unsig
        glEnable(GL_TEXTURE_2D);
     }
 
-    glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,mode?GL_REPLACE:GL_MODULATE);
+    glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,t_mode?GL_REPLACE:GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D,texture);
     if (ntex) glBindTexture(GL_TEXTURE_2D,texture);
 

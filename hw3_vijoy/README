@@ -8,6 +8,7 @@ Scene Description:
 This is based on the Interrogation room in 'The Dark Knight' movie where Batman questions the Joker.
 (image: ./dk.jpg) 
 
+KEY BINDINGS
 
  *  0          Reset view angle
  *  1	       Render room
@@ -44,6 +45,6 @@ This is based on the Interrogation room in 'The Dark Knight' movie where Batman 
  * r,R	       tune shininess level
 
 
-Time taken to complete this assignment: 
+Time taken to complete this assignment: 10-15 hours
 
 

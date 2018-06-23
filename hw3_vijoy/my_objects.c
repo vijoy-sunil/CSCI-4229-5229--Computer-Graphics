@@ -7,10 +7,11 @@ extern double door_w, door_h;
 extern double pillar1_w, pillar2_w;
 extern double ground_w, ground_h;
 extern double rep;
-extern int ntex;
+extern int ntex, mode;
 extern unsigned int texture[12]; 
 extern float shiny;
 extern int emission;
+extern int t_mode;
 
 void render_room(void)
 {
@@ -38,6 +39,7 @@ void render_room(void)
       glEnable(GL_TEXTURE_2D);
    }
    
+   glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,t_mode?GL_REPLACE:GL_MODULATE);
    if (ntex >= 0) glBindTexture(GL_TEXTURE_2D,texture[0]);					
    glBegin(GL_QUADS);
    glNormal3f( 0, 1, 0);
