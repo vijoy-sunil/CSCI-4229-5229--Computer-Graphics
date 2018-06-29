@@ -1,0 +1,50 @@
+
+Project - Vijoy Sunil Kumar
+CSCI4229/5229 Summer 2018
+
+Full Scene Rendering
+
+Scene Description: 
+This is based on the Interrogation room in 'The Dark Knight' movie where Batman questions the Joker.
+(image: ./dk.jpg) 
+
+KEY BINDINGS
+
+ *  0          Reset view angle
+ *  1	       Render room
+ *  2          Render tables
+ *  3          Render lamps, computers
+ *  4          Render chairs
+ *  5	       Render roof
+ *  6          Render ALL (default on start up)
+ *  7          Erase ALL
+ *  m          Toggle orthogonal/perspective/first person
+ *  x          Toggle axes
+ *  arrows     Change view angle (in ortho/perspective)
+ *  PgDn/PgUp  Zoom in and out (in ortho/perspective)
+ *  a,s,w,d    Move in first person (forward/backward/left/right)
+ *  j,k,i,l    Turn in first person (left/down/up/right)
+ *  .          Go to main door
+ *  ESC        Exit
+ *  ?          Toggle help menu
+ *-----------------
+ * Texture control
+ *-----------------
+ * &	       Toggle texture
+ *-----------------
+ * Lighting control
+ * ----------------
+ * *	       Toggle light
+ * y/Y	       Toggle light movement
+ * <,>	       left/right light movement
+ * [,]	       up/down light movement
+ * t/T	       tune ambient level
+ * f,F	       tune diffuse level
+ * g,G	       tune specular level
+ * h,H	       tune emission level
+ * r,R	       tune shininess level
+
+
+Time taken to complete this assignment: 10-15 hours
+
+
