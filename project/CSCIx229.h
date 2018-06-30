@@ -50,7 +50,9 @@ void render_table(void);
 void render_chair(void);
 void render_lamp(void);
 void render_computer(void);
-void render_human(void);
+void render_joker(void);
+void render_hand(void);
+void render_batman(void);
 
 #ifdef __cplusplus
 }

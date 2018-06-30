@@ -139,7 +139,7 @@ void display()
 {
    double table_top_thickness = 0.05, table_l = 3.0;
    double floors_r = 0.60, floors_g = 0.60, floors_b = 0.60;
-   const double len=1.5;  //  Length of axes
+   const double len=10.0;  //  Length of axes
    //  Erase the window and the depth buffer
    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
    //  Enable Z-buffering in OpenGL
@@ -392,7 +392,8 @@ void display()
    //render_lamp();
    //render_computer();
    //render_table();
-   render_human();
+   render_joker();
+   //render_batman();
 
    //  Draw axes - no lighting from here on
    glDisable(GL_LIGHTING);

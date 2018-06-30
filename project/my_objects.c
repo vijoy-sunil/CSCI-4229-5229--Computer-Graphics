@@ -13,16 +13,21 @@ extern float shiny;
 extern int emission;
 extern int t_mode;
 
-void render_human(void)
+void render_batman(void)
 {
    double base_r = 1.0, base_h = 3.0;
    double c_r = 1.0, c_g = 1.0, c_b = 1.0;
+   double arm_joints_r = 0.8, arm_joints_rgb = 0.3;
+
 
    draw_cylinder(base_r, base_h, c_r, c_g, c_b, texture[2]);
    glPushMatrix();
    glTranslated(-1.0,0,-1);
    draw_cylinder(base_r, base_h + 2, c_r, c_g, c_b, texture[2]);
    glPopMatrix();
+
+   sphere(-1.0, 0.0, -1.0, base_r, arm_joints_rgb, texture[1]);
+   sphere(-1.0, 0.0, 4.0, base_r, arm_joints_rgb, texture[1]);    
 
    // Thighs
    glPushMatrix();
@@ -114,9 +119,184 @@ void render_human(void)
    glVertex3f( 0.0, 6.5, 2.5);
    glEnd();  
 
-   double arm_joints_r = 0.8, arm_joints_rgb = 0.3;
+
    sphere(-1.0, 5.0, -1.8, arm_joints_r, arm_joints_rgb, texture[1]);
    sphere(-1.0, 5.0, 4.8, arm_joints_r, arm_joints_rgb, texture[1]);
+
+
+   // arm 
+   glPushMatrix();
+   glRotated(18.0,0,0,1);
+   glTranslated(0.5,5.0,-1.8);
+   glRotated(90.0,1,0,0);
+   double arms_r = 0.6, arms_h = 4.0;
+   draw_cylinder(arms_r, arms_h, 0, c_g, c_b, texture[2]);
+   glPopMatrix();  
+
+   glPushMatrix();
+   glRotated(18.0,0,0,1);
+   glTranslated(0.5,5.0,4.8);
+   glRotated(90.0,1,0,0);
+   draw_cylinder(arms_r, arms_h, 0, c_g, c_b, texture[2]);
+   glPopMatrix();   
+ 
+   
+   // arm joints
+   sphere(0.0, 1.5, -1.8, arm_joints_r, arm_joints_rgb, texture[1]);
+   sphere(0.0, 1.5, 4.8, arm_joints_r, arm_joints_rgb, texture[1]);
+   
+   
+   // arm
+   glPushMatrix();
+   glRotated(40.0,0,0,1);
+   glTranslated(1,0.9,-1.8);
+   glRotated(90.0,0,1,0);
+   draw_cylinder(arms_r, arms_h, 0, c_g, c_b, texture[2]);
+   glPopMatrix();   
+
+  
+   glPushMatrix();
+   glRotated(40.0,0,0,1);
+   glTranslated(1,0.9,4.8);
+   glRotated(90.0,0,1,0);
+   draw_cylinder(arms_r, arms_h, 0, c_g, c_b, texture[2]);
+   glPopMatrix();  
+   
+
+   // neck
+   cube(-1.0, 6.8, 1.5, 1.0, 0.8, 1.0, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);   
+
+   // head
+   cube(-1.0, 7.8, 1.5, 1.2, 1.2, 1.2, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1); 
+
+ 
+   // hand
+   glPushMatrix();
+   glTranslated(3.2,3.7,-1.7);
+   glRotated(40.0,0,0,1);
+   glScaled(0.8,0.8,0.8);
+   render_hand();
+   glPopMatrix(); 
+
+   glPushMatrix();
+   glTranslated(3.2,3.7,4.7);
+   glRotated(40.0,0,0,1);
+   glScaled(0.8,0.8,0.8);
+   render_hand();
+   glPopMatrix(); 
+
+}
+void render_joker(void)
+{
+
+   double base_r = 1.0, base_h = 3.0;
+   double c_r = 1.0, c_g = 1.0, c_b = 1.0;
+   double arm_joints_r = 0.8, arm_joints_rgb = 0.3;
+
+
+   draw_cylinder(base_r, base_h, c_r, c_g, c_b, texture[2]);
+   glPushMatrix();
+   glTranslated(-1.0,0,-1);
+   draw_cylinder(base_r, base_h + 2, c_r, c_g, c_b, texture[2]);
+   glPopMatrix();
+
+   sphere(-1.0, 0.0, -1.0, base_r, arm_joints_rgb, texture[1]);
+   sphere(-1.0, 0.0, 4.0, base_r, arm_joints_rgb, texture[1]);  
+
+   // Thighs
+   glPushMatrix();
+   glTranslated(-1.0,0,0);
+   glRotated(90.0,0,1,0);
+   double legs_r = 1.0, legs_h = 4.5;
+   draw_cylinder(legs_r, legs_h, 0, c_g, c_b, texture[2]);
+   glPopMatrix();
+
+   glPushMatrix();
+   glTranslated(-1.0,0,3.0);
+   glRotated(90.0,0,1,0);
+   draw_cylinder(legs_r, legs_h, 0, c_g, c_b, texture[2]);
+   glPopMatrix();
+
+   // Joints
+   double joints_r = legs_r;
+   double joints_rgb = 0.30;
+   sphere(3.5, 0, 0, joints_r, joints_rgb, texture[1]);
+   sphere(3.5, 0, 3.0, joints_r, joints_rgb, texture[1]);
+ 
+   // Legs
+   glPushMatrix();
+   glTranslated(3.5,0,3.0);
+   glRotated(90.0,1,0,0);
+   draw_cylinder(legs_r, legs_h, 0, c_g, c_b, texture[2]);
+   glPopMatrix();
+
+   glPushMatrix();
+   glTranslated(3.5,0,0);
+   glRotated(90.0,1,0,0);
+   draw_cylinder(legs_r, legs_h, 0, c_g, c_b, texture[2]);
+   glPopMatrix();
+
+   // Shoes
+   cube(3.5, -4.5, 3.0, 1.1, 0.25, 1.0, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);
+   cube(3.9, -5.0, 3.0, 1.8, 0.25, 1.1, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);
+
+   cube(3.5, -4.5, 0.0, 1.1, 0.25, 1.0, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);
+   cube(3.9, -5.0, 0.0, 1.8, 0.25, 1.1, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);
+
+   // torso
+   cube(-1.0, 3.0, 1.5, 1.0, 3.0, 2.5, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1); 
+
+   // arm joints
+   cube(-1.0, 5.5, -1.8, 1.0, 0.5, 0.8, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);
+   glBegin(GL_POLYGON);
+   glColor3f(1.0,0.0,0.0);
+   glVertex3f( 0.0, 6.0, 0.5);
+   glVertex3f( 0.0, 6.5, 0.5);
+   glVertex3f( 0.0, 6.0, -2.6);
+   glEnd();
+
+   glBegin(GL_POLYGON);
+   glColor3f(1.0,0.0,0.0);
+   glVertex3f( -2.0, 6.0, 0.5);
+   glVertex3f( -2.0, 6.5, 0.5);
+   glVertex3f( -2.0, 6.0, -2.6);
+   glEnd();
+
+   glBegin(GL_POLYGON);
+   glColor3f(1.0,1.0,0.0);
+   glVertex3f( 0.0, 6.0, -2.6);
+   glVertex3f( -2.0, 6.0, -2.6);
+   glVertex3f( -2.0, 6.5, 0.5);
+   glVertex3f( 0.0, 6.5, 0.5);
+   glEnd();
+  
+   cube(-1.0, 5.5, 4.8, 1.0, 0.5, 0.8, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);
+   glBegin(GL_POLYGON);
+   glColor3f(1.0,0.0,0.0);
+   glVertex3f( 0.0, 6.0, 5.6);
+   glVertex3f( 0.0, 6.0, 2.5);
+   glVertex3f( 0.0, 6.5, 2.5);
+   glEnd();
+
+   glBegin(GL_POLYGON);
+   glColor3f(1.0,0.0,0.0);
+   glVertex3f( -2.0, 6.0, 5.6);
+   glVertex3f( -2.0, 6.0, 2.5);
+   glVertex3f( -2.0, 6.5, 2.5);
+   glEnd();
+
+   glBegin(GL_POLYGON);
+   glColor3f(1.0,1.0,0.0);
+   glVertex3f( 0.0, 6.0, 5.6);
+   glVertex3f( -2.0, 6.0, 5.6);
+   glVertex3f( -2.0, 6.5, 2.5);
+   glVertex3f( 0.0, 6.5, 2.5);
+   glEnd();  
+
+
+   sphere(-1.0, 5.0, -1.8, arm_joints_r, arm_joints_rgb, texture[1]);
+   sphere(-1.0, 5.0, 4.8, arm_joints_r, arm_joints_rgb, texture[1]);
+
 
    // arm
    glPushMatrix();
@@ -152,9 +332,67 @@ void render_human(void)
    glRotated(130.0,0,1,0);
    draw_cylinder(arms_r, arms_h, 0, c_g, c_b, texture[2]);
    glPopMatrix();  
-   
+
+   // neck
+   cube(-1.0, 6.8, 1.5, 1.0, 0.8, 1.0, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);   
+
+   // head
+   cube(-1.0, 7.8, 1.5, 1.2, 1.2, 1.2, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1); 
+
+ 
+   // hand
+   glPushMatrix();
+   glTranslated(2.8,1.5,2.5);
+   glRotated(30.0,0,1,0);
+   glScaled(0.8,0.8,0.8);
+   render_hand();
+   glPopMatrix(); 
+
+   glPushMatrix();
+   glTranslated(2.6,1.8,1.0);
+   //glRotated(30.0,0,0,1);
+   glScaled(0.8,0.8,0.8);
+   render_hand();
+   glPopMatrix(); 
 }
 
+void render_hand(void)
+{
+   // hands
+   double hand_joints_r = 1.0, hand_joints_rgb = 0.3;
+   double c_r = 1.0, c_g = 1.0, c_b = 1.0;
+
+   sphere(0, 0, 0, hand_joints_r, hand_joints_rgb, texture[1]);   
+
+   // palm
+   cube(1.0, 0, 0, 1.0, 0.8, 0.2, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);  
+   // fingers
+   glPushMatrix();
+   glTranslated(1.0,0,0);
+   glRotated(30.0,0,0,1);
+   cube(1.0, 0.6, 0, 1.0, 0.1, 0.1, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);    
+   glPopMatrix(); 
+
+   glPushMatrix();
+   glTranslated(1.0,0,0);
+   cube(1.0, 0.6, 0, 1.3, 0.1, 0.1, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);    
+   glPopMatrix();    
+
+   glPushMatrix();
+   glTranslated(1.0, -0.4,0);
+   cube(1.0, 0.6, 0, 1.4, 0.1, 0.1, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);    
+   glPopMatrix();  
+
+   glPushMatrix();
+   glTranslated(1.0, -0.8,0);
+   cube(1.0, 0.6, 0, 1.2, 0.1, 0.1, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);    
+   glPopMatrix(); 
+
+   glPushMatrix();
+   glTranslated(1.0, -1.2,0);
+   cube(1.0, 0.6, 0, 1.1, 0.1, 0.1, 0, c_r, c_g, c_b, texture[2], 1,1,1,1,1,1);    
+   glPopMatrix(); 
+}
 void render_room(void)
 {
    //glEnable(GL_POLYGON_OFFSET_FILL);

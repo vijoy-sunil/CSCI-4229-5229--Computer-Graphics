@@ -265,22 +265,7 @@ void draw_cylinder(float radius,float height,
     glVertex3f(radius, 0.0, height);
     glTexCoord2f(0.0, 0.0); 
     glVertex3f(radius, 0.0, 0.0);
-    glEnd();
-
-    /** Draw the circle on top of cylinder */
-    /*
-    glColor3ub(R,G,B);
-    glBegin(GL_TRIANGLE_FAN);
-    glTexCoord2f(0.5,0.5); glVertex3f(0,0,height);
-    for (int k=0;k<=360;k+=10)
-    {
-       glTexCoord2f(rep/2*Cos(k)+0.5,rep/2*Sin(k)+0.5);
-       glVertex3f(Cos(k),Sin(k), height);
-    }
-    glDisable(GL_TEXTURE_2D);
-    glEnd();
-    */
-
+    glEnd(); 
 }
 
 void draw_cone(double height, double radius, double r, double g, double b, unsigned int texture)
