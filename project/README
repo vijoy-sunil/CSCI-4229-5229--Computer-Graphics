@@ -1,5 +1,5 @@
 
-Project - Vijoy Sunil Kumar
+Final Project - Vijoy Sunil Kumar
 CSCI4229/5229 Summer 2018
 
 Full Scene Rendering
@@ -11,13 +11,7 @@ This is based on the Interrogation room in 'The Dark Knight' movie where Batman 
 KEY BINDINGS
 
  *  0          Reset view angle
- *  1	       Render room
- *  2          Render tables
- *  3          Render lamps, computers
- *  4          Render chairs
- *  5	       Render roof
- *  6          Render ALL (default on start up)
- *  7          Erase ALL
+ *  1	       Render roof
  *  m          Toggle orthogonal/perspective/first person
  *  x          Toggle axes
  *  arrows     Change view angle (in ortho/perspective)

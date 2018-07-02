@@ -51,8 +51,12 @@ void render_chair(void);
 void render_lamp(void);
 void render_computer(void);
 void render_joker(void);
-void render_hand(void);
+void render_hand(unsigned int texture);
 void render_batman(void);
+void render_clock(void);
+void render_sign(void);
+void render_windows(void);
+void render_spotlight(void);
 
 #ifdef __cplusplus
 }
