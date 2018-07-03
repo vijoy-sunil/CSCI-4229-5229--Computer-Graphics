@@ -1,0 +1,64 @@
+
+Final Project - Vijoy Sunil Kumar
+CSCI4229/5229 Summer 2018
+
+Full Scene Rendering
+
+Scene Description: 
+This is based on the Interrogation room in 'The Dark Knight' movie where Batman questions the Joker.
+(image: ./dk.jpg) 
+
+KEY BINDINGS
+
+ *  0          Reset view angle
+ *  1	       Render roof
+ *  m          Toggle orthogonal/perspective/first person
+ *  x          Toggle axes
+ *  arrows     Change view angle (in ortho/perspective)
+ *  PgDn/PgUp  Zoom in and out (in ortho/perspective)
+ *  a,s,w,d    Move in first person (forward/backward/left/right)
+ *  j,k,i,l    Turn in first person (left/down/up/right)
+ *  .          Go to main door
+ *  ESC        Exit
+ *  ?          Toggle help menu
+ *-----------------
+ * Texture control
+ *-----------------
+ * &	       Toggle texture
+ *-----------------
+ * Lighting control
+ * ----------------
+ * *	       Toggle light
+ * y/Y	       Toggle light movement
+ * <,>	       left/right light movement
+ * [,]	       up/down light movement
+ * t/T	       tune ambient level
+ * f,F	       tune diffuse level
+ * g,G	       tune specular level
+ * h,H	       tune emission level
+ * r,R	       tune shininess level
+
+
+Objects in scene
+
+ * Room
+ * Transparent window
+ * Tables
+ * Chairs
+ * Lamps
+ * Laptops
+ * Human characters - Batman & Joker
+ * Animated smoke 
+ 
+Pending work
+ * 2-3 more human characters in the viewing room
+ * Batman's cape
+ * Collision detection when in first person
+ * Texture on human characters
+ * A smoking detective (animated smoke)
+
+Feedback Response - "Since the room is pretty empty, you need to make the few objects very detailed in order to make this worth while."
+ * Added viewing rooms on either sides of the interrogation room with 3-4 objects.
+
+
+
