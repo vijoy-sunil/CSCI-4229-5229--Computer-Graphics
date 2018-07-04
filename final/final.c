@@ -32,6 +32,7 @@
  * h,H	       tune emission level
  * r,R	       tune shininess level
  */
+
 #include "CSCIx229.h"
 
 int axes=0;       //  Display axes
@@ -45,6 +46,8 @@ double dim=12.5;  //  Size of world
 
 int move=1;       //  Move light
 int light=1;      //  Lighting
+int human_obj;    //  Object display list
+int cape_obj;
 
 // Light values
 int side      =   0;  //  Two sided mode
@@ -96,6 +99,10 @@ char event;
 char no_fwd = 0, no_back = 0, no_left = 0, no_right = 0;
 int state = 3;
 
+
+/* Each room in the scene has a state assigned to it. Whenever in first person,
+ * moving from one room to another changes the state variable
+ */
 void find_state(void)
 {
    // inner room
@@ -127,6 +134,9 @@ void find_state(void)
       state = 3;
 }
 
+/* The state variable from the above function along with the xpos and ypos
+ * of the first person is used to detect collision
+ */
 void collision (void)
 {  
    // inner room
@@ -326,16 +336,15 @@ void display()
        glRotatef(xrot,1.0,0.0,0.0);  //rotate our camera on the x-axis (left and right)
        glRotatef(yrot,0.0,1.0,0.0);  //rotate our camera on the y-axis (up and down)
 
+       // Debug log
        printf("x %f, y %f, z%f\n", xpos, ypos, zpos);
        // collision avoidance
        if(dist > fp_radius){
           glTranslated(-xpos,-ypos,-zpos); //translate the screen to the position of our camera
-          printf("no collision\n");
        }
        else
        {
-          glTranslated(-prev_xpos,-prev_ypos,-prev_zpos); 
-          printf("collision\n"); 
+          glTranslated(-prev_xpos,-prev_ypos,-prev_zpos);  
        }     
    }
 
@@ -468,20 +477,45 @@ void display()
 	render_computer();
 	glPopMatrix();
 
-	glPushMatrix();
-	glTranslated(-0.25, 1.09, 1.15); 
-	glRotated(90.0,0,1,0);
-	glScaled(0.15,0.15,0.15);
-	render_batman();
-	glPopMatrix(); 
+        // batman 
+        glPushMatrix();
+	glTranslated(0.02, 2.50, 1.20); 
+	glRotated(180.0,0,1,0);
+        glScaled(0.10, 0.12, 0.13);
+        glCallList(human_obj);
+        glPopMatrix();
 
-	glPushMatrix();
-	glTranslated(0.25, 1.09, -1.15); 
-	glRotated(-90.0,0,1,0);
-	glScaled(0.15,0.15,0.15);
-	render_joker();
-	glPopMatrix(); 
-     
+        // batman ears
+        glPushMatrix();
+        glTranslated(0.09,2.65,1.2);
+        glRotated(-90.0,1,0,0);
+        glScaled(0.05,0.06,0.10);
+        draw_cone(1, 1, 1.0, 1.0, 1.0, texture[19]);
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslated(-0.05,2.65,1.2);
+        glRotated(-90.0,1,0,0);
+        glScaled(0.05,0.06,0.10);
+        draw_cone(1, 1, 1.0, 1.0, 1.0, texture[19]);
+        glPopMatrix();
+
+        // cape
+        glPushMatrix();
+	glTranslated(0.02, 1.8, 1.38); 
+	glRotated(90.0,1,0,0);
+        glScaled(0.35, 0.7, 0.38);
+        glCallList(cape_obj);
+        glPopMatrix();        
+
+        // joker
+        glPushMatrix();
+	glTranslated(0.02, 2.50, -1.20); 
+        glScaled(0.10, 0.12, 0.13);
+        glCallList(human_obj);
+        glPopMatrix();
+
+        
 	//Outside chairs
 	glPushMatrix();
 	glTranslated(6.0, 0.0, 4.0);
@@ -518,16 +552,17 @@ void display()
 	glRotated(100.0,0,1,0);
 	render_chair();
 	glPopMatrix();
+        
 
 	//Joker chair
 	glPushMatrix();
-	glTranslated(0.0, 0.0, -1.0);
+	glTranslated(0.0, 0.0, -1.3);
 	render_chair();
 	glPopMatrix();
 
 	// Batman chair
 	glPushMatrix();
-	glTranslated(0.0, 0.0, 1.0);
+	glTranslated(0.0, 0.0, 1.3);
 	glRotated(-180.0,0,1,0);
 	render_chair();
 	glPopMatrix();
@@ -589,10 +624,15 @@ void display()
      Print("Position=%1.f,%1.f,%1.f, Head angle=%1.f,%1.f, Projection=%s",prev_xpos, prev_ypos, prev_zpos,yrot_d,xrot_d,mode_desc[mode]);
    }
 
+   // Collision alert
+   if(dist == 0){
+      glWindowPos2i(5,45);
+      Print("Collision !!!");
+   }
    // Help menu
    if(help_on == 0){
       glWindowPos2i(5,65);
-      Print("For help, press [?] state = %d",state);
+      Print("For help, press [?]");
    }
 
    //page 1/2 of help
@@ -1004,6 +1044,10 @@ int main(int argc,char* argv[])
    texture[25] = LoadTexBMP("./textures/batbottom2.bmp");
    texture[26] = LoadTexBMP("./textures/jokergloves.bmp");
    texture[27] = LoadTexBMP("./textures/jokershoes.bmp");
+
+   // import .obj files
+   human_obj = LoadOBJ("./blender/human2.obj");
+   cape_obj = LoadOBJ("./blender/cape2.obj");
 
    //  Pass control to GLUT so it can interact with the user
    ErrCheck("init");

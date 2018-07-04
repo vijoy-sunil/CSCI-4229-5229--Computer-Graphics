@@ -1,0 +1,13 @@
+# Blender MTL File: 'cape2.blend'
+# Material Count: 1
+
+newmtl Material
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.087912 0.087912 0.087912
+Ks 0.005544 0.002353 0.003850
+Ke 0.000000 0.000000 0.000000
+map_Kd ./blender/cape.bmp
+Ni 1.000000
+d 1.000000
+illum 2

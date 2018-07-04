@@ -1,16 +1,57 @@
+Run [make] 
+Executable name: "final"
 
 Final Project - Vijoy Sunil Kumar
 CSCI4229/5229 Summer 2018
 
-Full Scene Rendering
+Scene Description:
+----------------- 
+This is based on the Interrogation room in 'The Dark Knight' movie where Batman questions the Joker [see image: ./dk.jpg]. 
+When you run [make && ./final], the default view is orthogonal (without the roof rendered) so that the entire scene is 
+visible at start up. The roof gets automatically rendered when you go into first person. 
+See image: ./dk.jpg to view the scene from the movie. 
 
-Scene Description: 
-This is based on the Interrogation room in 'The Dark Knight' movie where Batman questions the Joker.
-(image: ./dk.jpg) 
+Objects in scene:
+-----------------
+ * Room 		(walls, pillars, roof, floors)
+ * Transparent window
+ * Tables 		(different sizes and orientations)
+ * Chairs 		(different orientations)
+ * Lamps 		(different orientations)
+ * Laptops 		(different orientations)
+ * Human characters	(Blender objects)
+ * Clock & sign boards  (Exit, warning signs)
 
-KEY BINDINGS
+Things to note:
+-----------------
+ * Blender objects 	(.obj files in ./blender)
+   The human characters in the scene (batman and joker) is completely made from scratch using Blender and imported into
+   the project using LoadOBJ() function. (The batman character has a cape as well). 
+   NOTE: Textures have not been applied completely to the blender objects as I ran out of time. I spend a lot longer than 
+   anticipated in creating the human models from scratch. (And, this was my first time using blender).
 
- *  0          Reset view angle
+ * Collision detection 	(in first person)
+   When in first person (press [m] or [M] to get to first person mode), collision detection has been added to all the 
+   walls, floors and roofs. 
+   NOTE: Collision detection has not been applied to the tables & chairs because it made the first person movement harder
+   with all the objects around the room.
+
+ * Texture & lighting  	(.bmp files in ./texture)
+   The texture for all surfaces has been set based off of the original 'The Dark Knight' movie interrogation scene and the
+   lighting has been set so that its effect is natural.
+   NOTE: [&] to toggle all textures and [*] to toggle lighting 
+
+Feedbacks & Improvements:
+-----------------
+ * "Nice start, but you need to improve Batman and the Joker.  They can't just be cuboids."
+    - Replaced simple (boring) cuboid human figures with blender .obj objects made from scratch.
+ * "Since the room is pretty empty, you need to make the few objects very detailed in order to make this worth while."
+    - Added viewing rooms on either sides of the interrogation room with 3-4 objects.
+
+
+Key bindings
+-----------------
+ *  0          Reset 
  *  1	       Render roof
  *  m          Toggle orthogonal/perspective/first person
  *  x          Toggle axes
@@ -37,28 +78,4 @@ KEY BINDINGS
  * g,G	       tune specular level
  * h,H	       tune emission level
  * r,R	       tune shininess level
-
-
-Objects in scene
-
- * Room
- * Transparent window
- * Tables
- * Chairs
- * Lamps
- * Laptops
- * Human characters - Batman & Joker
- * Animated smoke 
- 
-Pending work
- * 2-3 more human characters in the viewing room
- * Batman's cape
- * Collision detection when in first person
- * Texture on human characters
- * A smoking detective (animated smoke)
-
-Feedback Response - "Since the room is pretty empty, you need to make the few objects very detailed in order to make this worth while."
- * Added viewing rooms on either sides of the interrogation room with 3-4 objects.
-
-
 
